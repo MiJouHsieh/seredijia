@@ -41,22 +41,21 @@ export function SleepMedicationSection({ formData, setFormData }) {
           const isSelected =
             formData.sleepMedication === option.value;
 
-          const hasSelection = formData.sleepMedication !== null;
-
           return (
             <button
               key={option.value}
               type="button"
               onClick={() => handleSelect(option.value)}
+              aria-pressed={isSelected}
               className={`rounded-2xl px-3 py-4 transition ${
                 isSelected
-                  ? "text-cream bg-rose-400 shadow-md"
-                  : hasSelection
-                    ? "dark:bg-softCoral/20 text-stone-400"
-                    : "bg-cream/90 border border-coral text-stone-700"
+                  ? "bg-coral/80 scale-105 text-stone-500 shadow-md dark:text-stone-300"
+                  : "bg-stone-300/40 text-stone-400 dark:bg-stone-600/40 dark:text-stone-400/90"
               } `}
             >
-              <span className="block text-2xl">
+              <span
+                className={`${!isSelected ? "opacity-70" : ""} block text-2xl`}
+              >
                 {option.emoji}
               </span>
 
