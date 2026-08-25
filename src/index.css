@@ -1,3 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap');
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .page-style {
+    @apply min-h-screen bg-cream text-dark dark:bg-dark dark:text-cream;
+  }
+
+  .section-style {
+    @apply rounded-[32px] bg-cream dark:bg-dark space-y-4 p-5 shadow-lg text-coral;
+  }
+
+  .btn-style {
+    @apply text-coral dark:bg-coral dark:text-cream bg-cream border border-coral;
+  }
+
+  .textarea-style {
+    @apply w-full p-4 mt-2 text-base outline-none resize-none  rounded-2xl text-stone-700 placeholder:text-sm placeholder:leading-relaxed placeholder:text-stone-400 focus:ring-2 focus:ring-coral/50 bg-softPurple/20 dark:text-stone-300;
+  }
+     
+}
