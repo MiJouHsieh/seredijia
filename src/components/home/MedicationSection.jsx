@@ -42,62 +42,6 @@ export function MedicationSection({ formData, setFormData }) {
         今天有按時吃藥嗎？
       </h2>
 
-      {/* <div className="grid grid-cols-2 gap-3">
-        <button
-          type="button"
-          aria-pressed={formData.daytimeMedication === true}
-          className={getButtonClass(
-            formData.daytimeMedication === true,
-          )}
-          onClick={() =>
-            handleMedicationChange("daytimeMedication", true)
-          }
-        >
-          白天有吃藥
-        </button>
-
-        <button
-          type="button"
-          aria-pressed={formData.daytimeMedication === false}
-          className={getButtonClass(
-            formData.daytimeMedication === false,
-          )}
-          onClick={() =>
-            handleMedicationChange("daytimeMedication", false)
-          }
-        >
-          白天沒吃藥
-        </button>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-        <button
-          type="button"
-          aria-pressed={formData.nighttimeMedication === true}
-          className={getButtonClass(
-            formData.nighttimeMedication === true,
-          )}
-          onClick={() =>
-            handleMedicationChange("nighttimeMedication", true)
-          }
-        >
-          晚上有吃藥
-        </button>
-
-        <button
-          type="button"
-          aria-pressed={formData.nighttimeMedication === false}
-          className={getButtonClass(
-            formData.nighttimeMedication === false,
-          )}
-          onClick={() =>
-            handleMedicationChange("nighttimeMedication", false)
-          }
-        >
-          晚上沒吃藥
-        </button>
-      </div> */}
-
       {medicationGroups.map((group) => (
         <div key={group.key} className="grid grid-cols-2 gap-3">
           {group.options.map((option) => {
