@@ -52,12 +52,12 @@ export function TodayCheckInForm({
 
   return (
     <form
-      className="relative mx-auto grid min-w-[350px] max-w-6xl gap-4 space-y-4 lg:grid-cols-[110px_1fr]"
+      className="relative mx-auto grid w-full min-w-[345px] justify-items-center gap-0 space-y-4 lg:grid-cols-[220px_minmax(0,1fr)] lg:space-y-0"
       onSubmit={handleSubmit}
     >
       <CheckInChecklist items={checkInItems} />
 
-      <div className="space-y-4">
+      <div className="w-full max-w-xl space-y-4">
         <MoodSection
           formData={formData}
           setFormData={setFormData}
@@ -90,7 +90,7 @@ export function TodayCheckInForm({
 
         <button
           type="submit"
-          className="w-full py-4 font-semibold text-white rounded-full bg-violet-600"
+          className="w-full rounded-full bg-purple py-4 font-semibold text-cream hover:bg-softPurple dark:bg-[#30194b] hover:dark:bg-[#422266]"
         >
           ♡ {isEditing ? "更新今天記錄" : "儲存今天記錄"}
         </button>
