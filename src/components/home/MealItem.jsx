@@ -14,17 +14,17 @@ export function MealItem({
 }) {
   function getButtonClass(isSelected) {
     return `
-      rounded-full px-4 py-3 transition w-full
+      rounded-full px-4 py-3 w-full transition-colors
       ${
         isSelected
-          ? "bg-pink-400 text-white"
-          : "bg-gray-200 text-gray-600"
+          ? "bg-coral/80 text-stone-500 shadow-md dark:text-stone-300"
+          : "bg-stone-300/40 text-stone-400 dark:bg-stone-600/40 dark:text-stone-400/90"
       }
     `;
   }
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex flex-col items-center gap-5 text-base">
       <button
         type="button"
         aria-pressed={isSelected}
@@ -39,7 +39,7 @@ export function MealItem({
           type="button"
           aria-label={`新增${label}內容`}
           onClick={() => onOpenInput(mealName)}
-          className="flex items-center justify-center text-xl bg-white rounded-full size-9"
+          className="flex items-center justify-center text-xl rounded-full ring-coral size-9 ring-1 dark:bg-transparent"
         >
           +
         </button>
@@ -49,7 +49,7 @@ export function MealItem({
         <input
           type="text"
           autoFocus
-          placeholder={`${label}吃了什麼？`}
+          placeholder={`${label}吃什麼？`}
           value={mealInput}
           onChange={(event) =>
             onMealInputChange(event.target.value)
@@ -63,19 +63,19 @@ export function MealItem({
           onBlur={() => {
             onAddMealNote(mealName);
           }}
-          className="w-full px-3 py-2 text-sm border border-pink-300 outline-none rounded-2xl bg-white/80"
+          className="w-full px-3 py-2 text-sm rounded-full outline-none ring-coral/50 bg-softPurple/10 h-11 text-stone-700 ring-1 dark:text-stone-400/90"
         />
       )}
 
       {isSelected && note && (
-        <div className="flex items-center w-full gap-1 px-3 py-2 mt-2 border border-pink-400 rounded-full bg-white/50">
+        <div className="flex items-center w-full gap-1 px-3 py-2 rounded-full bg-softPurple/20 focus-within:ring-coral focus-within:ring-1">
           <input
             type="text"
             value={note}
             onChange={(event) =>
               onMealNoteChange(mealName, event.target.value)
             }
-            className="w-full min-w-0 bg-transparent outline-none"
+            className="w-full min-w-0 bg-transparent outline-none text-stone-700 dark:text-stone-300"
           />
 
           <button
