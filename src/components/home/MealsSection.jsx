@@ -27,10 +27,11 @@ export function MealsSection({ formData, setFormData }) {
 
   //確認新增
   function handleAddMealNote(mealName) {
-    if (!mealInput.trim()) return;
+    const trimmedInput = mealInput.trim();
 
-    handleMealNoteChange(mealName, mealInput.trim());
-
+    if (trimmedInput) {
+      handleMealNoteChange(mealName, trimmedInput);
+    }
     setMealInput("");
     setOpenMealInput(null);
   }
@@ -61,8 +62,8 @@ export function MealsSection({ formData, setFormData }) {
   ];
 
   return (
-    <section className="space-y-4 rounded-[32px] bg-pink-200/80 p-5 shadow-lg">
-      <h2 className="text-xl font-semibold text-center text-stone-700">
+    <section className="section-style">
+      <h2 className="text-xl font-semibold text-center">
         今天有吃飯嗎？
       </h2>
 
