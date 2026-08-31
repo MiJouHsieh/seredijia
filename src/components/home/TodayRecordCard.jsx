@@ -8,9 +8,13 @@ function formatTime(dateValue) {
 
 function RecordItem({ label, value }) {
   return (
-    <div className="flex justify-between gap-4 pb-3 border-b border-slate-100">
-      <span className="shrink-0 text-slate-500">{label}</span>
-      <span className="font-medium text-right">{value}</span>
+    <div className="flex justify-between gap-4 pb-3 border-b border-pink-200">
+      <span className="dark:text-cream/80 shrink-0 text-slate-500">
+        {label}
+      </span>
+      <span className="font-medium text-right text-slate-400">
+        {value}
+      </span>
     </div>
   );
 }
@@ -43,13 +47,11 @@ export function TodayRecordCard({ entry, onEdit }) {
     entry.meals.dinner;
 
   return (
-    <section className="p-5 space-y-5 shadow-sm rounded-3xl bg-white/80 backdrop-blur-sm">
+    <section className="w-full p-5 space-y-5 shadow-sm bg-cream/80 dark:bg-dark/50 dark:text-cream/80 rounded-3xl text-slate-500 backdrop-blur-sm">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-bold text-slate-700">
-            今日紀錄
-          </h2>
-          <span className="text-xs text-slate-500">
+          <h2 className="text-lg font-bold">今日紀錄</h2>
+          <span className="text-xs">
             最後更新 {formatTime(entry.updatedAt)}
           </span>
         </div>
@@ -57,13 +59,13 @@ export function TodayRecordCard({ entry, onEdit }) {
         <button
           type="button"
           onClick={onEdit}
-          className="px-4 py-2 text-sm font-medium text-pink-700 bg-pink-100 rounded-full"
+          className="px-4 py-2 text-sm rounded-full font-regular text-cream bg-coral"
         >
           編輯
         </button>
       </div>
 
-      <div className="space-y-3 text-sm text-slate-700">
+      <div className="space-y-3 text-sm text-cream/50">
         <RecordItem
           label="心情"
           value={moodLabels[entry.mood] ?? "未記錄"}
@@ -76,7 +78,9 @@ export function TodayRecordCard({ entry, onEdit }) {
         )}
 
         <div className="space-y-2">
-          <p className="text-slate-500">用藥</p>
+          <p className="dark:text-cream/80 text-slate-500">
+            用藥
+          </p>
           <div className="pl-3 space-y-3">
             <RecordItem
               label="白天用藥"
@@ -101,7 +105,9 @@ export function TodayRecordCard({ entry, onEdit }) {
         </div>
 
         <div className="space-y-2">
-          <p className="text-slate-500">三餐</p>
+          <p className="dark:text-cream/80 text-slate-500">
+            三餐
+          </p>
           {hasMealRecord ? (
             <div className="pl-3 space-y-3">
               {entry.meals.breakfast && (
