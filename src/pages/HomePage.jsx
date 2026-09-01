@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from "react";
 
 import { TodayCheckInHeader } from "src/components/home/TodayCheckInHeader";
 import { TodayCheckInForm } from "src/components/home/TodayCheckInForm";
@@ -35,14 +35,13 @@ const initialFormData = {
 };
 
 export function HomePage() {
-  
   const [formData, setFormData] = useState(initialFormData);
   const [moodEntries, setMoodEntries] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  
+
   const shouldShowForm = isEditing || isFormOpen;
-  
+
   const currentDate = new Date();
   //今天有無紀錄 //今天日期===近期日期
   const todayEntry = moodEntries.find((entry) => {
@@ -52,20 +51,18 @@ export function HomePage() {
   });
 
   function handleSaveEntry() {
-    const now = new Date()
+    const now = new Date();
     const newEntry = {
       id: todayEntry?.id ?? crypto.randomUUID(),
       ...formData,
-      createdAt:
-        todayEntry?.createdAt ?? now.toISOString(),
+      createdAt: todayEntry?.createdAt ?? now.toISOString(),
       updatedAt: now.toISOString(),
     };
 
     setMoodEntries((prevEntries) => {
       const otherEntries = prevEntries.filter(
         (entry) =>
-          getDateKey(entry.createdAt) !==
-          getDateKey(now),
+          getDateKey(entry.createdAt) !== getDateKey(now),
       );
 
       return [newEntry, ...otherEntries];
@@ -76,8 +73,8 @@ export function HomePage() {
   }
 
   function handleEditEntry() {
-    if (!todayEntry) return
-    
+    if (!todayEntry) return;
+
     setFormData({
       mood: todayEntry.mood,
       moodNote: todayEntry.moodNote ?? "",
@@ -97,36 +94,40 @@ export function HomePage() {
 
     setIsEditing(true);
   }
-  
+
   return (
-    <main className="min-h-screen bg-[url('/src/assets/background.png')] bg-cover bg-center px-4 py-6">
-      <div className="max-w-md mx-auto space-y-4">
-        <h1 className="text-4xl text-center">SereDijia</h1>
-        <TodayCheckInHeader
-          currentDate={currentDate}
-          hasTodayEntry={Boolean(todayEntry)}
-        />
-        {shouldShowForm ? (
-          <TodayCheckInForm
-            formData={formData}
-            setFormData={setFormData}
-            isEditing={isEditing}
-            onSave={handleSaveEntry}
+    <main className="relative pt-12 page-style min-h-dvh">
+      <div className="relative z-10 w-full px-4 py-10">
+        <div className="mx-auto flex max-w-[500px] flex-col items-center space-y-4 rounded-3xl md:max-w-[600px] md:px-6 lg:max-w-[800px]">
+          <h1 className="w-full mt-2 text-4xl text-center text-coral">
+            SereDijia
+          </h1>
+          <TodayCheckInHeader
+            currentDate={currentDate}
+            hasTodayEntry={Boolean(todayEntry)}
           />
-        ) : todayEntry ? (
-          <TodayRecordCard
-            entry={todayEntry}
-            onEdit={handleEditEntry}
-          />
-        ) : (
-          <button
-            type="button"
-            onClick={() => setIsFormOpen(true)}
-            className="w-full py-4 font-semibold text-white rounded-full bg-indigo-700/70"
-          >
-            開始今日紀錄
-          </button>
-        )}
+          {shouldShowForm ? (
+            <TodayCheckInForm
+              formData={formData}
+              setFormData={setFormData}
+              isEditing={isEditing}
+              onSave={handleSaveEntry}
+            />
+          ) : todayEntry ? (
+            <TodayRecordCard
+              entry={todayEntry}
+              onEdit={handleEditEntry}
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={() => setIsFormOpen(true)}
+              className="w-full rounded-full bg-purple py-4 font-semibold text-cream hover:bg-softPurple dark:bg-[#30194b] hover:dark:bg-[#422266] ring-slate-100/10 ring-1"
+            >
+              開始今日紀錄
+            </button>
+          )}
+        </div>
       </div>
     </main>
   );
