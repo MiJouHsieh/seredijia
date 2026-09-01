@@ -1,25 +1,62 @@
-@import url('https://fonts.googleapis.com/css2?family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  * {
+    @apply box-border;
+  }
+  
+  body {
+    font-family: "Reddit Sans", sans-serif;
+    @apply m-0;
+  }
+}
+
 @layer utilities {
   .page-style {
-    @apply min-h-screen bg-cream text-dark dark:bg-dark dark:text-cream;
+    @apply bg-cream text-dark dark:bg-dark dark:text-cream min-h-screen;
+
+    background:
+      radial-gradient(
+        circle at 65% 50%,
+        rgba(248, 191, 255, 0.65),
+        transparent 65%
+      ),
+      linear-gradient(
+        180deg,
+        #c5ace8 0%,
+        #d7b6dc 48%,
+        #f2aaa6 100%
+      );
+  }
+
+  .dark .page-style {
+    background:
+      radial-gradient(
+        circle at 85% 70%,
+        rgba(10, 5, 43, 0.65),
+        transparent 90%
+      ),
+      linear-gradient(
+        180deg,
+        #30194b 40%,
+        #4e1361 60%,
+        #b57b9b 100%
+      );
   }
 
   .section-style {
-    @apply rounded-[32px] bg-cream dark:bg-dark space-y-4 p-5 shadow-lg text-coral;
+    @apply bg-cream/85 dark:bg-dark/50 text-coral space-y-4 rounded-[32px] p-5 shadow-lg;
   }
 
   .btn-style {
-    @apply text-coral dark:bg-coral dark:text-cream bg-cream border border-coral;
+    @apply text-coral dark:bg-coral dark:text-cream bg-cream border-coral border;
   }
 
   .textarea-style {
-    @apply w-full p-4 mt-2 text-base outline-none resize-none  rounded-2xl text-stone-700 placeholder:text-sm placeholder:leading-relaxed placeholder:text-stone-400 focus:ring-2 focus:ring-coral/50 bg-softPurple/20 dark:text-stone-300;
+    @apply focus:ring-coral/50 bg-softPurple/20 mt-2 w-full resize-none rounded-2xl p-4 text-base text-stone-700 outline-none placeholder:text-sm placeholder:leading-relaxed placeholder:text-stone-400 focus:ring-2 dark:text-stone-300;
   }
-     
 }
