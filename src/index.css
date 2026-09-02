@@ -8,7 +8,7 @@
   * {
     @apply box-border;
   }
-  
+
   body {
     font-family: "Reddit Sans", sans-serif;
     @apply m-0;
@@ -17,46 +17,117 @@
 
 @layer utilities {
   .page-style {
-    @apply bg-cream text-dark dark:bg-dark dark:text-cream min-h-screen;
+    @apply relative isolate min-h-screen overflow-x-clip text-[#44363A] dark:text-[#F4E9E7];
 
-    background:
+    background-image:
       radial-gradient(
-        circle at 65% 50%,
-        rgba(248, 191, 255, 0.65),
-        transparent 65%
+        circle at 18% 15%,
+        rgba(244, 229, 223, 0.42),
+        transparent 46%
+      ),
+      radial-gradient(
+        circle at 76% 72%,
+        rgba(229, 150, 137, 0.22),
+        transparent 48%
       ),
       linear-gradient(
         180deg,
-        #c5ace8 0%,
-        #d7b6dc 48%,
-        #f2aaa6 100%
+        #f8eadf 0%,
+        #cbb7af 52%,
+        #debba9 100%
       );
   }
 
   .dark .page-style {
-    background:
+    background-image:
       radial-gradient(
-        circle at 85% 70%,
-        rgba(10, 5, 43, 0.65),
-        transparent 90%
+        circle at 18% 15%,
+        rgba(113, 91, 132, 0.22),
+        transparent 42%
+      ),
+      radial-gradient(
+        circle at 78% 78%,
+        rgba(149, 82, 105, 0.16),
+        transparent 48%
       ),
       linear-gradient(
         180deg,
-        #30194b 40%,
-        #4e1361 60%,
-        #b57b9b 100%
+        #382c46 0%,
+        #2f223e 52%,
+        #422d49 100%
       );
   }
 
-  .section-style {
-    @apply bg-cream/85 dark:bg-dark/50 text-coral space-y-4 rounded-[32px] p-5 shadow-lg;
+  .page-style::after {
+    content: "";
+    position: fixed;
+    left: 0;
+    bottom: -15%;
+    width: 100%;
+    height: 48vh;
+
+    z-index: -1;
+    pointer-events: none;
+
+    background: radial-gradient(
+      ellipse at center,
+      rgba(238, 163, 148, 0.28),
+      rgba(232, 178, 163, 0.12) 45%,
+      transparent 70%
+    );
+
+    filter: blur(30px);
+
+    animation: ambient-glow 10s ease-in-out infinite alternate;
   }
 
-  .btn-style {
-    @apply text-coral dark:bg-coral dark:text-cream bg-cream border-coral border;
+  .dark .page-style::after {
+    background: radial-gradient(
+      ellipse at center,
+      rgba(133, 74, 101, 0.18),
+      rgba(92, 62, 111, 0.12) 48%,
+      transparent 72%
+    );
+
+    filter: blur(34px);
+  }
+
+  @keyframes ambient-glow {
+    0% {
+      transform: translate3d(-18%, -8%, 0) scale(0.95);
+    }
+
+    50% {
+      transform: translate3d(8%, -22%, 0) scale(1.12);
+    }
+
+    100% {
+      transform: translate3d(22%, 2%, 0) scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-style::after {
+      animation: none;
+    }
+  }
+
+  .section-style {
+    @apply text-milkTeaBrown dark:text-peach space-y-4 rounded-[32px] bg-cream/85 p-5 shadow-lg dark:bg-dark/30;
   }
 
   .textarea-style {
-    @apply focus:ring-coral/50 bg-softPurple/20 mt-2 w-full resize-none rounded-2xl p-4 text-base text-stone-700 outline-none placeholder:text-sm placeholder:leading-relaxed placeholder:text-stone-400 focus:ring-2 dark:text-stone-300;
+    @apply bg-cream100/60 placeholder:text-milkTea/60 focus:ring-peach/50 dark:placeholder:text-milkTea dark:bg-milkTea/10 mt-2 w-full resize-none rounded-2xl p-4 text-base text-dark outline-none placeholder:text-sm placeholder:leading-relaxed focus:ring-2 dark:text-stone-300;
+  }
+
+  .inputItem {
+    @apply placeholder:text-milkTea/60 bg-cream100/60 dark:placeholder:text-milkTea dark:bg-cream200/20 h-11 w-full rounded-full px-3 py-2 text-sm text-dark outline-none dark:text-cream;
+  }
+  .mealItem {
+    @apply placeholder:text-milkTea/60 w-full min-w-0 bg-transparent text-dark outline-none dark:text-stone-300;
+  }
+
+  .cta-btn-style {
+    @apply  w-full rounded-full bg-[linear-gradient(135deg,#CB816E_0%,#eaa08f_65%,#F4C2B0_100%)] py-4 font-semibold text-cream shadow-[0_10px_30px_rgba(203,129,110,0.25)] ring-1 ring-slate-100/80 transition duration-300 hover:shadow-[0_14px_36px_rgba(203,129,110,0.32)] hover:brightness-110 dark:text-purple100;
   }
 }
