@@ -17,7 +17,7 @@ export function MealItem({
       rounded-full px-4 py-3 w-full transition-colors
       ${
         isSelected
-          ? "bg-coral/80 text-stone-500 shadow-md dark:text-stone-300"
+          ? "bg-softPeach/80 text-stone-500 shadow-md dark:text-purple100"
           : "bg-stone-300/40 text-stone-400 dark:bg-stone-600/40 dark:text-stone-400/90"
       }
     `;
@@ -39,7 +39,7 @@ export function MealItem({
           type="button"
           aria-label={`新增${label}內容`}
           onClick={() => onOpenInput(mealName)}
-          className="flex items-center justify-center text-xl rounded-full ring-coral size-9 ring-1 dark:bg-transparent"
+          className="flex items-center justify-center text-xl rounded-full ring-peach size-9 ring-1 dark:bg-transparent"
         >
           +
         </button>
@@ -63,19 +63,19 @@ export function MealItem({
           onBlur={() => {
             onAddMealNote(mealName);
           }}
-          className="w-full px-3 py-2 text-sm rounded-full outline-none ring-coral/50 bg-softPurple/10 h-11 text-stone-700 ring-1 dark:text-stone-400/90"
+          className="inputItem"
         />
       )}
 
       {isSelected && note && (
-        <div className="flex items-center w-full gap-1 px-3 py-2 rounded-full bg-softPurple/20 focus-within:ring-coral focus-within:ring-1">
+        <div className="flex items-center w-full gap-1 px-3 py-2 rounded-full focus-within:ring-peach bg-cream100 dark:bg-cream200/20 focus-within:ring-1">
           <input
             type="text"
             value={note}
             onChange={(event) =>
               onMealNoteChange(mealName, event.target.value)
             }
-            className="w-full min-w-0 bg-transparent outline-none text-stone-700 dark:text-stone-300"
+            className="mealItem"
           />
 
           <button
