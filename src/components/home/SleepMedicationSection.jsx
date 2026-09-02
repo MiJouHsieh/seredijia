@@ -31,7 +31,7 @@ export function SleepMedicationSection({ formData, setFormData }) {
           今天有服用助眠藥嗎？
         </h2>
 
-        <p className="mt-1 text-sm text-stone-400">
+        <p className="mt-1 text-sm text-milkTea">
           記錄睡前的用藥狀況
         </p>
       </div>
@@ -49,7 +49,7 @@ export function SleepMedicationSection({ formData, setFormData }) {
               aria-pressed={isSelected}
               className={`rounded-2xl px-3 py-4 transition ${
                 isSelected
-                  ? "bg-coral/80 scale-105 text-stone-500 shadow-md dark:text-stone-300"
+                  ? "bg-softPeach/80 dark:text-purple100 scale-105 text-stone-500 shadow-md"
                   : "bg-stone-300/40 text-stone-400 dark:bg-stone-600/40 dark:text-stone-400/90"
               } `}
             >

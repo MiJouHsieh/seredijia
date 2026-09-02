@@ -1,13 +1,15 @@
-export function TodayCheckInHeader({ currentDate, hasTodayEntry }) {
-  
+export function TodayCheckInHeader({
+  currentDate,
+  hasTodayEntry,
+}) {
   const formattedDate = currentDate.toLocaleDateString("zh-TW", {
     month: "long",
     day: "numeric",
     weekday: "long",
   });
-  
+
   return (
-    <header className="w-full text-sm text-center dark:text-cream/80 text-dark/80">
+    <header className="w-full text-sm text-center text-dark dark:text-cream">
       <time dateTime={currentDate.toISOString()}>
         {formattedDate}
       </time>
