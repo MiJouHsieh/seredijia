@@ -8,12 +8,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        cream: "#fffbf7",
-        dark: "#232323",
+        cream: "#F8EADF",
+        cream100: "#E9D5C7",
+        cream200: "#DEBBA9",
+        dark: "#5D494B",
+        
         coral: "#F1888A",
         purple: "#7C5BD1",
+        purple100: "#5B4453", 
         softCoral: "#F8D2CD",
         softPurple: "#9A7BE0",
+        milkTea: "#9F827A",
+        milkTeaBrown: "#B97667",
+        peach: "#EB9C91",
+        softPeach: "#F4C2B0",
       }
     },
   },

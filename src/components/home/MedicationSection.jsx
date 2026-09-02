@@ -20,10 +20,10 @@ export function MedicationSection({ formData, setFormData }) {
     return `
       rounded-full px-4 py-3 focus-visible:outline-none
       focus-visible:ring-2
-      focus-visible:ring-coral/50 transition-colors duration-700
+      focus-visible:ring-peach/50 transition-colors duration-700
       ${
         isSelected
-          ? "bg-coral/80 text-stone-500 shadow-md dark:text-stone-300"
+          ? "bg-softPeach/80 text-stone-500 shadow-md dark:text-purple100"
           : "bg-stone-300/40 text-stone-400 dark:bg-stone-600/40 dark:text-stone-400/90"
       }
     `;
