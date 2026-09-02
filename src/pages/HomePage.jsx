@@ -98,8 +98,8 @@ export function HomePage() {
   return (
     <main className="relative pt-12 page-style min-h-dvh">
       <div className="relative z-10 w-full px-4 py-10">
-        <div className="mx-auto flex max-w-[500px] flex-col items-center space-y-4 rounded-3xl md:max-w-[600px] md:px-6 lg:max-w-[800px]">
-          <h1 className="w-full mt-2 text-4xl text-center text-coral">
+        <div className="mx-auto flex max-w-[500px] flex-col items-center gap-8 rounded-3xl md:max-w-[600px] md:px-6 lg:max-w-[800px]">
+          <h1 className="w-full mt-2 text-4xl text-center text-milkTeaBrown dark:text-peach">
             SereDijia
           </h1>
           <TodayCheckInHeader
@@ -122,7 +122,7 @@ export function HomePage() {
             <button
               type="button"
               onClick={() => setIsFormOpen(true)}
-              className="w-full rounded-full bg-purple py-4 font-semibold text-cream hover:bg-softPurple dark:bg-[#30194b] hover:dark:bg-[#422266] ring-slate-100/10 ring-1"
+              className="cta-btn-style"
             >
               開始今日紀錄
             </button>
