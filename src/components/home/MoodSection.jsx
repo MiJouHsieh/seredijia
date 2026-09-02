@@ -28,7 +28,7 @@ export function MoodSection({ formData, setFormData }) {
           今天心情還好嗎？
         </h2>
 
-        <p className="mt-1 text-sm text-stone-400">
+        <p className="mt-1 text-sm text-milkTea">
           最接近現在的感受
         </p>
       </div>
@@ -43,12 +43,12 @@ export function MoodSection({ formData, setFormData }) {
               type="button"
               aria-pressed={isSelected}
               onClick={() => handleMoodChange(option.value)}
-              className="flex flex-col items-center gap-2 focus-visible:ring-coral/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-stone-900"
+              className="flex flex-col items-center gap-2 focus-visible:ring-peach/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-stone-900"
             >
               <span
                 className={`flex size-14 items-center justify-center rounded-full text-2xl transition ${
                   isSelected
-                    ? "bg-coral/80 scale-105 shadow-md"
+                    ? "bg-softPeach/80 scale-105 shadow-md"
                     : "bg-stone-300/40 opacity-70 dark:bg-stone-600/40"
                 } `}
               >
@@ -70,9 +70,10 @@ export function MoodSection({ formData, setFormData }) {
       </div>
 
       <label className="block mt-6">
-        <span className="text-sm font-semibold text-stone-500 dark:text-stone-400">
+        {/* <span className="text-sm font-semibold text-stone-500 dark:text-stone-400"> */}
+        <span className="text-sm font-semibold text-dark dark:text-stone-400">
           想記下什麼嗎？
-          <span className="ml-2 font-normal text-stone-400 dark:text-stone-500">
+          <span className="ml-2 font-normal text-milkTea dark:text-stone-500">
             選填
           </span>
         </span>
