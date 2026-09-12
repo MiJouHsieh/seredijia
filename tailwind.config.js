@@ -20,6 +20,7 @@ export default {
         softPurple: "#9A7BE0",
         milkTea: "#9F827A",
         milkTeaBrown: "#B97667",
+        milkTeaDark: "#7d625a",
         peach: "#EB9C91",
         softPeach: "#F4C2B0",
       }
