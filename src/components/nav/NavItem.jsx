@@ -14,8 +14,8 @@ export function NavItem({ id, label, onClick, pathname, to = `/${id}` }) {
         <span
           className={`text-milkTeaDark dark:text-peach dark:text-peach hover:border-peach inline-block items-center border-b-4 border-transparent text-2xl dark:hover:border-cream md:text-base ${
             isActive
-              ? "border-peach scale-[1.1] text-cream "
-              : " "
+              ? "border-peach scale-[1.1]"
+              : ""
           }`}
         >
           {label}
