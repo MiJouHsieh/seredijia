@@ -4,6 +4,8 @@ import { TodayCheckInHeader } from "src/components/home/TodayCheckInHeader";
 import { TodayCheckInForm } from "src/components/home/TodayCheckInForm";
 import { TodayRecordCard } from "src/components/home/TodayRecordCard";
 
+import { useAuth } from "src/context/AuthContext";
+
 //今天日期
 function getDateKey(dateValue) {
   const date = new Date(dateValue);
@@ -35,6 +37,9 @@ const initialFormData = {
 };
 
 export function HomePage() {
+  const { user } = useAuth();
+  const displayName = user?.user_metadata?.name;
+
   const [formData, setFormData] = useState(initialFormData);
   const [moodEntries, setMoodEntries] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -106,6 +111,13 @@ export function HomePage() {
             currentDate={currentDate}
             hasTodayEntry={Boolean(todayEntry)}
           />
+
+          {displayName && (
+            <p className="w-full text-lg font-medium text-center text-milkTea">
+              嗨，{displayName}，我們來看看今天吧 ♡
+            </p>
+          )}
+
           {shouldShowForm ? (
             <TodayCheckInForm
               formData={formData}

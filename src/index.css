@@ -130,4 +130,33 @@
   .cta-btn-style {
     @apply  w-full rounded-full bg-[linear-gradient(135deg,#CB816E_0%,#eaa08f_65%,#F4C2B0_100%)] py-4 font-semibold text-cream shadow-[0_10px_30px_rgba(203,129,110,0.25)] ring-1 ring-slate-100/80 transition duration-300 hover:shadow-[0_14px_36px_rgba(203,129,110,0.32)] hover:brightness-110 dark:text-purple100;
   }
+
+  .auth-input-field {
+    @apply tracking-widest text-milkTea dark:text-peach placeholder:text-dark/50 dark:placeholder:text-softPeach/50  dark:bg-dark/50 focus:border-softPeach outline-none h-10 rounded-md px-2 bg-cream/70;
+  }
+
+  /* Chrome / Safari autofill */
+  /* Light mode autofill */
+  .auth-input-field:-webkit-autofill,
+  .auth-input-field:-webkit-autofill:hover,
+  .auth-input-field:-webkit-autofill:focus,
+  .auth-input-field:-webkit-autofill:active {
+    -webkit-text-fill-color: #9f827a;
+    caret-color: #9f827a;
+
+    -webkit-box-shadow: 0 0 0 1000px #f8eadf inset;
+    box-shadow: 0 0 0 1000px #f8eadf inset;
+  }
+
+  /* Dark mode autofill */
+  .dark .auth-input-field:-webkit-autofill,
+  .dark .auth-input-field:-webkit-autofill:hover,
+  .dark .auth-input-field:-webkit-autofill:focus,
+  .dark .auth-input-field:-webkit-autofill:active {
+    -webkit-text-fill-color: #eb9c91;
+    caret-color: #eb9c91;
+
+    -webkit-box-shadow: 0 0 0 1000px #5d494b inset;
+    box-shadow: 0 0 0 1000px #5d494b inset;
+  }
 }

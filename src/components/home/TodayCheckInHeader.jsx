@@ -9,7 +9,7 @@ export function TodayCheckInHeader({
   });
 
   return (
-    <header className="w-full text-sm text-center text-dark dark:text-cream">
+    <header className="w-full text-sm text-center text-milkTeaDark dark:text-cream/80">
       <time dateTime={currentDate.toISOString()}>
         {formattedDate}
       </time>
