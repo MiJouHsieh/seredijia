@@ -91,7 +91,7 @@ export function SignUp() {
                 <header className="mb-10 text-center">
                   <div className="mb-4 text-3xl">♡</div>
 
-                  <h1 className="mb-3 text-4xl font-semibold">
+                  <h1 className="mb-3 text-4xl font-semibold text-dark dark:text-cream">
                     建立帳號
                   </h1>
 

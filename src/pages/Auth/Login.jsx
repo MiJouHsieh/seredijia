@@ -63,7 +63,7 @@ export function Login() {
               </h1>
 
               <p className="mt-3 text-sm text-dark/60 dark:text-cream/60">
-                回來繼續記錄今天的狀態
+                記錄今天的狀態
               </p>
             </header>
 

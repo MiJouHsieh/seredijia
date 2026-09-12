@@ -21,7 +21,7 @@ export function PasswordInput({ label, id, ...props }) {
   const hasPassword = field.value?.trim().length > 0;
 
   return (
-    <div className="relative flex flex-col gap-y-2">
+    <div className="relative flex flex-col gap-y-2 text-dark dark:text-cream">
       <label htmlFor={id} className="font-semibold text-orange">
         {label}
       </label>
@@ -40,19 +40,22 @@ export function PasswordInput({ label, id, ...props }) {
 
       {hasPassword && (
         <span
-          className="relative cursor-pointer text-yellow300"
+          className="relative cursor-pointer text-milkTea"
           onClick={togglePasswordVisibility}
           aria-label="Toggle password visibility"
         >
           {passwordShow ? (
-            <GoEye className="absolute z-20 bottom-9 right-6" />
+            <GoEye className="absolute z-20 bottom-5 right-6" />
           ) : (
-            <RxEyeClosed className="absolute z-20 bottom-9 right-6" />
+            <RxEyeClosed className="absolute z-20 bottom-5 right-6" />
           )}
         </span>
       )}
       {meta.touched && meta.error && (
-        <div id={id + "-error"} className="text-sm text-red">
+        <div
+          id={id + "-error"}
+          className="text-sm font-extralight text-dark/90 dark:text-cream/60"
+        >
           {meta.error}
         </div>
       )}
