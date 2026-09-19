@@ -1,9 +1,9 @@
-import { CheckInChecklist } from "./CheckInChecklist";
-import { MoodSection } from "./MoodSection";
-import { MedicationSection } from "./MedicationSection";
-import { SleepMedicationSection } from "./SleepMedicationSection";
-import { MealsSection } from "./MealsSection";
-import { DailyEventSection } from "./DailyEventSection";
+import { CheckInChecklist } from "src/components/todayRecord/form/CheckInChecklist";
+import { MoodSection } from "src/components/todayRecord/form/MoodSection";
+import { MedicationSection } from "src/components/todayRecord/form/MedicationSection";
+import { SleepMedicationSection } from "src/components/todayRecord/form/SleepMedicationSection";
+import { MealsSection } from "src/components/todayRecord/form/MealsSection";
+import { DailyEventSection } from "src/components/todayRecord/form/DailyEventSection";
 
 export function TodayCheckInForm({
   formData,
