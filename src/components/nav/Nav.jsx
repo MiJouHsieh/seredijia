@@ -1,4 +1,3 @@
-import Logo from "src/assets/favicon.svg?react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { LuSun, LuMoon } from "react-icons/lu";
 import { IoMdClose } from "react-icons/io";
@@ -83,16 +82,36 @@ export function Nav() {
   return (
     <nav className="fixed top-0 z-30 flex items-center w-full py-2 text-base leading-6 text-milkTea dark:text-peach">
       <div className="mx-auto flex w-[calc(100%-24px)] max-w-6xl items-center justify-between rounded-full bg-cream/20 px-5 py-3 backdrop-blur-[5px]">
-        <Link
-          to="/"
-          aria-label="Seredijia 首頁"
-        >
-          <Logo className="size-10" />
+        <Link to="/" aria-label="Seredijia 首頁">
+          <h1 className="w-full mt-2 text-4xl text-center text-milkTeaBrown dark:text-peach">
+            SereDijia
+          </h1>
         </Link>
         <div className="flex gap-x-4">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={toggleDarkMode}
+              aria-label="切換深淺色模式"
+              className="p-2 border border-transparent rounded-full text-milkTea dark:text-peach dark:hover:border-peach hover:border-milkTea"
+            >
+              <LuMoon className="size-6 dark:hidden" />
+              <LuSun className="hidden size-6 dark:block" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowMenu(true)}
+              className="md:hidden"
+              aria-label="開啟導覽選單"
+              aria-expanded={showMenu}
+              aria-controls={showMenu ? "mobile-menu" : undefined}
+            >
+              <RxHamburgerMenu className="text-milkTea dark:text-peach hover:text-peach size-6 hover:dark:text-cream" />
+            </button>
+          </div>
           <div className="items-center justify-end hidden gap-4 md:flex">
             {user ? (
-              <ul className="flex items-center justify-end gap-4 list-none">
+              <ul className="flex items-center justify-end gap-4 pt-1 list-none">
                 {ROUTES.map(({ id, label }) => {
                   return (
                     <NavItem
@@ -115,27 +134,6 @@ export function Nav() {
                 />
               </ul>
             )}
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={toggleDarkMode}
-              aria-label="切換深淺色模式"
-              className="p-2 border border-transparent rounded-full text-milkTea dark:text-peach dark:hover:border-peach hover:border-milkTea"
-            >
-              <LuMoon className="size-6 dark:hidden" />
-              <LuSun className="hidden size-6 dark:block" />
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowMenu(true)}
-              className="md:hidden"
-              aria-label="開啟導覽選單"
-              aria-expanded={showMenu}
-              aria-controls={showMenu ? "mobile-menu" : undefined}
-            >
-              <RxHamburgerMenu className="text-milkTea dark:text-peach hover:text-peach size-6 hover:dark:text-cream" />
-            </button>
           </div>
         </div>
       </div>
