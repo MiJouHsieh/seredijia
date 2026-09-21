@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MealItem } from "src/components/todayRecord/form/MealItem";
+import { MealItem } from "src/components/records/form/MealItem";
 
 export function MealsSection({ formData, setFormData }) {
   const [openMealInput, setOpenMealInput] = useState(null);

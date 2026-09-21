@@ -4,6 +4,7 @@ import { AuthProvider } from "src/context/AuthContext";
 import { HomePage } from "src/pages/HomePage";
 import { TodayRecordPage } from "src/pages/TodayRecordPage";
 import { ReportPage } from "src/pages/ReportPage";
+import { RecordDetailPage } from "src/pages/RecordDetailPage";
 import { HistoryPage } from "src/pages/HistoryPage";
 import { Nav } from "src/components/nav/Nav";
 import { Login } from "src/pages/Auth/Login";
@@ -22,6 +23,7 @@ function App() {
             path="/today-record"
             element={<TodayRecordPage />}
           />
+          <Route path="/records/:date" element={<RecordDetailPage />} />
           <Route path="/history" element={<HistoryPage />} />
           <Route path="/report" element={<ReportPage />} />
         </Routes>

@@ -1,6 +1,7 @@
 export function TodayCheckInHeader({
   currentDate,
   hasTodayEntry,
+  isEditing,
 }) {
   const formattedDate = currentDate.toLocaleDateString("zh-TW", {
     month: "long",
@@ -15,9 +16,11 @@ export function TodayCheckInHeader({
       </time>
 
       <p>
-        {hasTodayEntry
-          ? "今天已經完成記錄了 ♡"
-          : "記錄五項就好囉"}
+        {isEditing
+          ? "編輯今天的紀錄 ♡"
+          : hasTodayEntry
+            ? "今天的紀錄已儲存 ♡"
+            : "留下今天的紀錄 ♡"}
       </p>
     </header>
   );

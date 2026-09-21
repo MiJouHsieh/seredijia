@@ -1,15 +1,16 @@
-import { CheckInChecklist } from "src/components/todayRecord/form/CheckInChecklist";
-import { MoodSection } from "src/components/todayRecord/form/MoodSection";
-import { MedicationSection } from "src/components/todayRecord/form/MedicationSection";
-import { SleepMedicationSection } from "src/components/todayRecord/form/SleepMedicationSection";
-import { MealsSection } from "src/components/todayRecord/form/MealsSection";
-import { DailyEventSection } from "src/components/todayRecord/form/DailyEventSection";
+import { CheckInChecklist } from "src/components/records/form/CheckInChecklist";
+import { MoodSection } from "src/components/records/form/MoodSection";
+import { MedicationSection } from "src/components/records/form/MedicationSection";
+import { SleepMedicationSection } from "src/components/records/form/SleepMedicationSection";
+import { MealsSection } from "src/components/records/form/MealsSection";
+import { DailyEventSection } from "src/components/records/form/DailyEventSection";
 
-export function TodayCheckInForm({
+export function RecordForm({
   formData,
   setFormData,
   onSave,
   isEditing,
+  onCancel,
 }) {
   function handleSubmit(event) {
     event.preventDefault();
@@ -92,8 +93,17 @@ export function TodayCheckInForm({
           type="submit"
           className="cta-btn-style dark:text-purple100"
         >
-          ♡ {isEditing ? "更新今天記錄" : "儲存今天記錄"}
+          ♡ {isEditing ? "儲存修改" : "儲存今天記錄"}
         </button>
+        {isEditing && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="block px-4 py-3 mx-auto mt-5 underline text-milkTeaDark dark:text-milkTea underline-offset-8"
+          >
+            取消編輯
+          </button>
+        )}
       </div>
     </form>
   );
