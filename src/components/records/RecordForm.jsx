@@ -11,10 +11,14 @@ export function RecordForm({
   onSave,
   isEditing,
   onCancel,
+  isSaving,
+  saveError,
 }) {
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    onSave();
+
+    if (isSaving) return;
+    await onSave();
   }
 
   const checkInItems = [
@@ -88,17 +92,28 @@ export function RecordForm({
             }))
           }
         />
-
+        
+        {saveError && (
+          <p role="alert" className="text-center text-red-600">
+            {saveError}
+          </p>
+        )}
+        
         <button
           type="submit"
+          disabled={isSaving}
           className="cta-btn-style dark:text-purple100"
         >
-          ♡ {isEditing ? "儲存修改" : "儲存今天記錄"}
+          {isSaving
+            ? "儲存中…"
+            : `♡ ${isEditing ? "儲存修改" : "儲存今天記錄"}`}
         </button>
+
         {isEditing && (
           <button
             type="button"
             onClick={onCancel}
+            disabled={isSaving}
             className="block px-4 py-3 mx-auto mt-5 underline text-milkTeaDark dark:text-milkTea underline-offset-8"
           >
             取消編輯
