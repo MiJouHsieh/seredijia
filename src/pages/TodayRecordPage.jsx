@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { TodayCheckInHeader } from "src/components/records/TodayCheckInHeader";
 import { RecordForm } from "src/components/records/RecordForm";
@@ -46,15 +46,107 @@ export function TodayRecordPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+  
   const currentDate = new Date();
+  const todayKey = getDateKey(currentDate);
+  const userId = user?.id
 
   const todayEntry = moodEntries.find(
     (entry) =>
-      getDateKey(entry.createdAt) === getDateKey(currentDate),
+      entry.userId === userId && entry.recordDate === todayKey,
   );
 
   const shouldShowForm = isEditing || !todayEntry;
 
+  useEffect(() => {
+    let ignore = false;
+
+    async function fetchTodayEntry() {
+      // 開始讀取：顯示 loading、清除之前的錯誤與紀錄
+      setIsLoading(true);
+      setLoadError("");
+      setMoodEntries([]);
+      setIsEditing(false);
+      setFormData(initialFormData);
+      setSaveError("");
+
+      // 沒有登入，不查詢資料庫
+      if (!userId) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from("daily_checkins")
+          .select("*")
+          .eq("user_id", userId)
+          .eq("record_date", todayKey)
+          .maybeSingle();
+
+        if (error) throw error;
+
+        // 離開頁面或切換帳號後，不使用舊的查詢結果
+        if (ignore) return;
+
+        // 今天沒有紀錄，保持空陣列，稍後顯示表單
+        if (!data) return;
+
+        // 把資料庫欄位轉成前端元件使用的格式
+        const entry = {
+          id: data.id,
+          userId: data.user_id,
+          recordDate: data.record_date,
+          createdAt: data.created_at,
+          updatedAt: data.updated_at,
+
+          mood: data.mood,
+          moodNote: data.mood_note ?? "",
+
+          daytimeMedication: data.daytime_medication,
+          nighttimeMedication: data.nighttime_medication,
+          sleepMedication: data.sleep_medication_status,
+
+          meals: {
+            breakfast: data.breakfast ?? false,
+            lunch: data.lunch ?? false,
+            dinner: data.dinner ?? false,
+          },
+
+          mealNotes: {
+            breakfast: data.breakfast_note ?? "",
+            lunch: data.lunch_note ?? "",
+            dinner: data.dinner_note ?? "",
+          },
+
+          eventNote: data.event_note ?? "",
+        };
+
+        setMoodEntries([entry]);
+      } catch (error) {
+        if (ignore) return;
+
+        console.error("讀取今日紀錄失敗：", error);
+
+        // 讀取失敗：設定畫面上的錯誤訊息
+        setLoadError("讀取紀錄失敗，請重新整理再試一次。");
+      } finally {
+        // 成功、沒有紀錄或失敗，都結束 loading
+        if (!ignore) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    fetchTodayEntry();
+
+    return () => {
+      ignore = true;
+    };
+  }, [userId, todayKey]);
+  
   async function handleSaveEntry() {
     // 已經在儲存，就不要重複送出
     if (isSaving) return;
@@ -119,20 +211,18 @@ export function TodayRecordPage() {
       const newEntry = {
         ...formData,
         id: data.id,
-        createdAt: todayEntry?.createdAt ?? now.toISOString(),
-        updatedAt: now.toISOString(),
+        userId: data.user_id,
+        recordDate: data.record_date,
+        createdAt: data.created_at,
+        updatedAt: data.updated_at,
       };
 
-      setMoodEntries((prevEntries) => {
-        const otherEntries = prevEntries.filter(
-          (entry) =>
-            getDateKey(entry.createdAt) !== getDateKey(now),
-        );
+      // 只讀取今天的一筆資料
+      setMoodEntries([newEntry]);
 
-        return [newEntry, ...otherEntries];
-      });
       // 成功後，才離開編輯畫面
       setIsEditing(false);
+      
     } catch (error) {
       console.error("儲存紀錄失敗：", error);
       setSaveError("儲存失敗，請稍後再試一次。");
@@ -140,10 +230,8 @@ export function TodayRecordPage() {
       // 成功或失敗，都結束「儲存中」
       setIsSaving(false);
     }
-    
   }
   
-
   function handleEditEntry() {
     if (!todayEntry) return;
 
@@ -182,7 +270,16 @@ export function TodayRecordPage() {
             嗨，{displayName} 我們來看看今天吧 ♡
           </p>
         )}
-        {shouldShowForm ? (
+
+        {isLoading ? (
+          <p role="status" className="text-center">
+            正在讀取今日紀錄…
+          </p>
+        ) : loadError ? (
+          <p role="alert" className="text-center text-red-600">
+            {loadError}
+          </p>
+        ) : shouldShowForm ? (
           <RecordForm
             formData={formData}
             setFormData={setFormData}

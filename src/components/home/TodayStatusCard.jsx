@@ -53,7 +53,7 @@ export function TodayStatusCard({ displayName, todayEntry }) {
               className="font-medium transition-colors duration-200 border-b-4 hover:border-peach dark:border-cream200 border-milkTeaDark hover:text-cream"
             >
               {todayEntry
-                ? "查看或編輯今日紀錄"
+                ? "查看今日紀錄"
                 : "開始今日紀錄"}
             </Link>
           </div>
