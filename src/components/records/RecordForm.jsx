@@ -1,19 +1,24 @@
-import { CheckInChecklist } from "./CheckInChecklist";
-import { MoodSection } from "./MoodSection";
-import { MedicationSection } from "./MedicationSection";
-import { SleepMedicationSection } from "./SleepMedicationSection";
-import { MealsSection } from "./MealsSection";
-import { DailyEventSection } from "./DailyEventSection";
+import { CheckInChecklist } from "src/components/records/form/CheckInChecklist";
+import { MoodSection } from "src/components/records/form/MoodSection";
+import { MedicationSection } from "src/components/records/form/MedicationSection";
+import { SleepMedicationSection } from "src/components/records/form/SleepMedicationSection";
+import { MealsSection } from "src/components/records/form/MealsSection";
+import { DailyEventSection } from "src/components/records/form/DailyEventSection";
 
-export function TodayCheckInForm({
+export function RecordForm({
   formData,
   setFormData,
   onSave,
   isEditing,
+  onCancel,
+  isSaving,
+  saveError,
 }) {
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    onSave();
+
+    if (isSaving) return;
+    await onSave();
   }
 
   const checkInItems = [
@@ -87,13 +92,33 @@ export function TodayCheckInForm({
             }))
           }
         />
-
+        
+        {saveError && (
+          <p role="alert" className="text-center text-red-600">
+            {saveError}
+          </p>
+        )}
+        
         <button
           type="submit"
+          disabled={isSaving}
           className="cta-btn-style dark:text-purple100"
         >
-          ♡ {isEditing ? "更新今天記錄" : "儲存今天記錄"}
+          {isSaving
+            ? "儲存中…"
+            : `♡ ${isEditing ? "儲存修改" : "儲存今天記錄"}`}
         </button>
+
+        {isEditing && (
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={isSaving}
+            className="block px-4 py-3 mx-auto mt-5 underline text-milkTeaDark dark:text-milkTea underline-offset-8"
+          >
+            取消編輯
+          </button>
+        )}
       </div>
     </form>
   );

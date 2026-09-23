@@ -23,6 +23,13 @@ export default {
         milkTeaDark: "#7d625a",
         peach: "#EB9C91",
         softPeach: "#F4C2B0",
+        dustyPeach: "#D28A80",
+        clayPeach: "#9C635C"
+      },
+      screens: {
+        '425': '425px',
+        '500': '500px',
+        
       }
     },
   },

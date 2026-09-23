@@ -40,7 +40,7 @@ const sleepMedicationLabels = {
   notNeeded: "不需要服用",
 };
 
-export function TodayRecordCard({ entry, onEdit }) {
+export function RecordCard({ entry, onEdit }) {
   const hasMealRecord =
     entry.meals.breakfast ||
     entry.meals.lunch ||

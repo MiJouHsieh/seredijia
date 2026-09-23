@@ -17,7 +17,7 @@
 
 @layer utilities {
   .page-style {
-    @apply relative isolate min-h-screen overflow-x-clip text-[#44363A] dark:text-[#F4E9E7];
+    @apply relative isolate min-h-screen text-[#44363A] dark:text-[#F4E9E7];
 
     background-image:
       radial-gradient(

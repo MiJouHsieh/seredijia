@@ -8,7 +8,7 @@ export function NavItem({ id, label, onClick, pathname, to = `/${id}` }) {
       <Link
         key={id}
         to={to}
-        className="cursor-pointer"
+        className="cursor-pointer "
         onClick={onClick}
       >
         <span
