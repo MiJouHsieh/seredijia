@@ -48,22 +48,26 @@ export function TodayRecordPage() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
-  
-  const currentDate = new Date();
-  const todayKey = getDateKey(currentDate);
-  const userId = user?.id
 
-  const todayEntry = moodEntries.find(
-    (entry) =>
-      entry.userId === userId && entry.recordDate === todayKey,
+  const today = getDateKey(new Date());
+  const [selectedDate, setSelectedDate] = useState(() =>
+    getDateKey(new Date()),
   );
 
-  const shouldShowForm = isEditing || !todayEntry;
+  const userId = user?.id;
+
+  const selectedEntry = moodEntries.find(
+    (entry) =>
+      entry.userId === userId &&
+      entry.recordDate === selectedDate,
+  );
+
+  const shouldShowForm = isEditing || !selectedEntry;
 
   useEffect(() => {
     let ignore = false;
 
-    async function fetchTodayEntry() {
+    async function fetchSelectedEntry() {
       // 開始讀取：顯示 loading、清除之前的錯誤與紀錄
       setIsLoading(true);
       setLoadError("");
@@ -72,8 +76,8 @@ export function TodayRecordPage() {
       setFormData(initialFormData);
       setSaveError("");
 
-      // 沒有登入，不查詢資料庫
-      if (!userId) {
+      // 沒有登入，沒有日期或選到未來，不查詢
+      if (!userId || !selectedDate || selectedDate > today) {
         setIsLoading(false);
         return;
       }
@@ -83,7 +87,7 @@ export function TodayRecordPage() {
           .from("daily_checkins")
           .select("*")
           .eq("user_id", userId)
-          .eq("record_date", todayKey)
+          .eq("record_date", selectedDate)
           .maybeSingle();
 
         if (error) throw error;
@@ -140,16 +144,16 @@ export function TodayRecordPage() {
       }
     }
 
-    fetchTodayEntry();
+    fetchSelectedEntry();
 
     return () => {
       ignore = true;
     };
-  }, [userId, todayKey]);
-  
+  }, [userId, selectedDate, today]);
+
   async function handleSaveEntry() {
     // 已經在儲存，就不要重複送出
-    if (isSaving) return;
+    if (isSaving || isLoading || loadError) return;
 
     // 確認登入後，才能使用 user.id
     if (!user) {
@@ -157,9 +161,14 @@ export function TodayRecordPage() {
       return;
     }
 
+    if (!selectedDate || selectedDate > getDateKey(new Date())) {
+      setSaveError("請選擇今天或之前的日期。");
+      return;
+    }
+
     setIsSaving(true);
     setSaveError("");
-    
+
     try {
       const now = new Date();
 
@@ -167,7 +176,7 @@ export function TodayRecordPage() {
       const payload = {
         // 這筆紀錄屬於誰、哪一天
         user_id: user.id,
-        record_date: getDateKey(now),
+        record_date: selectedDate,
 
         // 心情
         mood: formData.mood,
@@ -221,8 +230,7 @@ export function TodayRecordPage() {
       setMoodEntries([newEntry]);
 
       // 成功後，才離開編輯畫面
-      setIsEditing(false);
-      
+      setIsEditing(false)
     } catch (error) {
       console.error("儲存紀錄失敗：", error);
       setSaveError("儲存失敗，請稍後再試一次。");
@@ -231,49 +239,79 @@ export function TodayRecordPage() {
       setIsSaving(false);
     }
   }
-  
+
   function handleEditEntry() {
-    if (!todayEntry) return;
+    if (!selectedEntry) return;
 
     setFormData({
-      mood: todayEntry.mood,
-      moodNote: todayEntry.moodNote ?? "",
-      daytimeMedication: todayEntry.daytimeMedication,
-      nighttimeMedication: todayEntry.nighttimeMedication,
-      sleepMedication: todayEntry.sleepMedication,
+      mood: selectedEntry.mood,
+      moodNote: selectedEntry.moodNote ?? "",
+      daytimeMedication: selectedEntry.daytimeMedication,
+      nighttimeMedication: selectedEntry.nighttimeMedication,
+      sleepMedication: selectedEntry.sleepMedication,
       meals: {
         ...initialFormData.meals,
-        ...todayEntry.meals,
+        ...selectedEntry.meals,
       },
       mealNotes: {
         ...initialFormData.mealNotes,
-        ...todayEntry.mealNotes,
+        ...selectedEntry.mealNotes,
       },
-      eventNote: todayEntry.eventNote ?? "",
+      eventNote: selectedEntry.eventNote ?? "",
     });
 
     setIsEditing(true);
   }
+
+  function handleDateChange(nextDate) {
+    if (
+      isSaving ||
+      !nextDate ||
+      nextDate > today ||
+      nextDate === selectedDate
+    ) {
+      return;
+    }
+
+    // 先切換成讀取畫面，避免短暫顯示上一天的表單
+    setIsLoading(true);
+    setSelectedDate(nextDate);
+  }
+
+  //選取日期
+  // 用本地時間建立日期，避免把 YYYY-MM-DD 當成 UTC 解析
+  const selectedDisplayDate = new Date(
+    `${selectedDate}T00:00:00`,
+  );
 
   return (
     <main className="relative pt-12 page-style min-h-dvh">
       <div className="relative z-10 w-full px-4 py-10">
         <div className="mx-auto flex max-w-[500px] flex-col items-center gap-8 rounded-3xl md:max-w-[600px] md:px-6 lg:max-w-[800px]">
           <TodayCheckInHeader
-            currentDate={currentDate}
-            hasTodayEntry={Boolean(todayEntry)}
+            currentDate={selectedDisplayDate}
+            hasEntry={Boolean(selectedEntry)}
             isEditing={isEditing}
+            displayName={displayName}
           />
         </div>
-        {displayName && (
-          <p className="w-full my-3 text-center font-mdmedium text-milkTea">
-            嗨，{displayName} 我們來看看今天吧 ♡
-          </p>
-        )}
+
+        <div className="flex items-center justify-center gap-3 my-4">
+          <label htmlFor="record-date">紀錄日期</label>
+
+          <input
+            id="record-date"
+            type="date"
+            value={selectedDate}
+            max={today}
+            disabled={isSaving}
+            onChange={(e) => handleDateChange(e.target.value)}
+          />
+        </div>
 
         {isLoading ? (
           <p role="status" className="text-center">
-            正在讀取今日紀錄…
+            正在讀取紀錄…
           </p>
         ) : loadError ? (
           <p role="alert" className="text-center text-red-600">
@@ -288,10 +326,13 @@ export function TodayRecordPage() {
             saveError={saveError}
             onSave={handleSaveEntry}
             onCancel={() => setIsEditing(false)}
+            selectedDate={selectedDate}
+            onDateChange={setSelectedDate}
+            maxDate={today}
           />
         ) : (
           <RecordCard
-            entry={todayEntry}
+            entry={selectedEntry}
             onEdit={handleEditEntry}
           />
         )}
