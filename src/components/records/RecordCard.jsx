@@ -1,11 +1,3 @@
-function formatTime(dateValue) {
-  return new Date(dateValue).toLocaleTimeString("zh-TW", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-}
-
 function RecordItem({ label, value }) {
   return (
     <div className="flex justify-between gap-4 pb-3 border-b border-softPeach">
@@ -46,14 +38,50 @@ export function RecordCard({ entry, onEdit }) {
     entry.meals.lunch ||
     entry.meals.dinner;
 
+  // 紀錄所屬日期：用本地時間解析
+  const recordDate = new Date(`${entry.recordDate}T00:00:00`);
+
+  const isToday =
+    recordDate.toDateString() === new Date().toDateString();
+
+  const formattedRecordDate = recordDate.toLocaleDateString(
+    "zh-TW",
+    {
+      month: "long",
+      day: "numeric",
+      weekday: "long",
+    },
+  );
+
+  const title = isToday
+    ? "今日紀錄"
+    : `${formattedRecordDate}的紀錄`;
+  
+  // 更新
+  const updatedAt = new Date(entry.updatedAt);
+
+  const formattedUpdatedAt = updatedAt.toLocaleString("zh-TW", {
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  });
+
   return (
     <section className="flex flex-col w-full gap-8">
       <div className="flex items-start justify-between text-dark dark:text-cream">
         <div>
-          <h2 className="text-lg font-bold">今日紀錄</h2>
-          <span className="text-xs">
-            最後更新 {formatTime(entry.updatedAt)}
-          </span>
+          <h2 className="mb-2 text-lg font-bold">{title}</h2>
+          <p className="text-sm">
+            最後更新
+            <time
+              className="ml-2"
+              dateTime={entry.updatedAt}
+            >
+              {formattedUpdatedAt}
+            </time>
+          </p>
         </div>
 
         <button
