@@ -28,7 +28,7 @@ const moodLabels = {
 
 const sleepMedicationLabels = {
   taken: "有服用",
-  notTaken: "需要但沒服用",
+  missed: "需要但沒服用",
   notNeeded: "不需要服用",
 };
 
