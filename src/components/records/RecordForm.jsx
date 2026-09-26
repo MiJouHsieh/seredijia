@@ -13,7 +13,9 @@ export function RecordForm({
   onCancel,
   isSaving,
   saveError,
+  dayLabel,
 }) {
+
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -64,26 +66,31 @@ export function RecordForm({
 
       <div className="w-full max-w-xl space-y-4">
         <MoodSection
+          dayLabel={dayLabel}
           formData={formData}
           setFormData={setFormData}
         />
 
         <MedicationSection
+          dayLabel={dayLabel}
           formData={formData}
           setFormData={setFormData}
         />
 
         <SleepMedicationSection
+          dayLabel={dayLabel}
           formData={formData}
           setFormData={setFormData}
         />
 
         <MealsSection
+          dayLabel={dayLabel}
           formData={formData}
           setFormData={setFormData}
         />
 
         <DailyEventSection
+          dayLabel={dayLabel}
           value={formData.eventNote}
           onChange={(event) =>
             setFormData((prev) => ({
@@ -92,13 +99,13 @@ export function RecordForm({
             }))
           }
         />
-        
+
         {saveError && (
           <p role="alert" className="text-center text-red-600">
             {saveError}
           </p>
         )}
-        
+
         <button
           type="submit"
           disabled={isSaving}
@@ -106,7 +113,7 @@ export function RecordForm({
         >
           {isSaving
             ? "儲存中…"
-            : `♡ ${isEditing ? "儲存修改" : "儲存今天記錄"}`}
+            : `♡ ${isEditing ? "儲存修改" : `儲存${dayLabel}的紀錄 ♡`}`}
         </button>
 
         {isEditing && (

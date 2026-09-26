@@ -1,7 +1,9 @@
 export function TodayCheckInHeader({
   currentDate,
-  hasTodayEntry,
+  hasEntry,
   isEditing,
+  displayName,
+  dayLabel,
 }) {
   const formattedDate = currentDate.toLocaleDateString("zh-TW", {
     month: "long",
@@ -17,11 +19,17 @@ export function TodayCheckInHeader({
 
       <p>
         {isEditing
-          ? "編輯今天的紀錄 ♡"
-          : hasTodayEntry
-            ? "今天的紀錄已儲存 ♡"
-            : "留下今天的紀錄 ♡"}
+          ? `編輯${dayLabel}的紀錄 ♡`
+          : hasEntry
+            ? `${dayLabel}的紀錄已儲存 ♡`
+            : `留下${dayLabel}的紀錄 ♡`}
       </p>
+
+      {displayName && (
+        <p className="w-full my-3 text-center font-mdmedium text-milkTea">
+          嗨，{displayName} 我們來看看{dayLabel}吧 ♡
+        </p>
+      )}
     </header>
   );
 }

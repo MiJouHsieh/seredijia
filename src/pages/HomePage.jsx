@@ -27,6 +27,7 @@ export function HomePage() {
   const currentDate = new Date();
   const todayKey = getDateKey(currentDate);
   const userId = user?.id
+  const today = getDateKey(new Date());
   
   //今天有無紀錄 //今天日期===近期日期
    const todayEntry = moodEntries.find(
@@ -131,7 +132,7 @@ export function HomePage() {
         <div className="mx-auto flex max-w-[500px] flex-col items-center gap-8 rounded-3xl md:max-w-[600px] md:px-6 lg:max-w-[800px]">
           {/* 今日已紀錄的話顯示 */}
           {/* 今日狀態＋主要操作按鈕*/}
-          
+
           {isLoading ? (
             <p role="status">正在讀取今日紀錄…</p>
           ) : loadError ? (
@@ -142,6 +143,7 @@ export function HomePage() {
             <TodayStatusCard
               displayName={displayName}
               todayEntry={todayEntry}
+              today={today}
             />
           )}
 

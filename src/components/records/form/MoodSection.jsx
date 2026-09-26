@@ -6,7 +6,7 @@ const moodOptions = [
   { value: "overwhelmed", label: "不堪負荷", emoji: "😣" },
 ];
 
-export function MoodSection({ formData, setFormData }) {
+export function MoodSection({ formData, setFormData, dayLabel }) {
   const handleMoodChange = (mood) => {
     setFormData((prev) => ({
       ...prev,
@@ -25,11 +25,11 @@ export function MoodSection({ formData, setFormData }) {
     <section className="section-style">
       <div className="text-center">
         <h2 className="text-xl font-semibold">
-          今天心情還好嗎？
+          {dayLabel}心情還好嗎？
         </h2>
 
         <p className="mt-1 text-sm text-milkTea">
-          最接近現在的感受
+          {`最接近${dayLabel === "今天" ? "現在" : "那天"}的感受`}
         </p>
       </div>
 
@@ -70,7 +70,6 @@ export function MoodSection({ formData, setFormData }) {
       </div>
 
       <label className="block mt-6">
-        {/* <span className="text-sm font-semibold text-stone-500 dark:text-stone-400"> */}
         <span className="text-sm font-semibold text-dark dark:text-stone-400">
           想記下什麼嗎？
           <span className="ml-2 font-normal text-milkTea dark:text-stone-500">
@@ -81,7 +80,7 @@ export function MoodSection({ formData, setFormData }) {
         <textarea
           value={formData.moodNote ?? ""}
           onChange={handleNoteChange}
-          placeholder="今天發生的事，或現在有什麼感受……"
+          placeholder={`${dayLabel}發生的事，或${dayLabel === "今天" ? "現在" : "當時"}有什麼感受……`}
           className="textarea-style"
         />
       </label>

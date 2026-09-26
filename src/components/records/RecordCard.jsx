@@ -1,11 +1,3 @@
-function formatTime(dateValue) {
-  return new Date(dateValue).toLocaleTimeString("zh-TW", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-}
-
 function RecordItem({ label, value }) {
   return (
     <div className="flex justify-between gap-4 pb-3 border-b border-softPeach">
@@ -36,24 +28,57 @@ const moodLabels = {
 
 const sleepMedicationLabels = {
   taken: "有服用",
-  notTaken: "需要但沒服用",
+  missed: "需要但沒服用",
   notNeeded: "不需要服用",
 };
 
-export function RecordCard({ entry, onEdit }) {
+export function RecordCard({ entry, onEdit, dayLabel }) {
   const hasMealRecord =
     entry.meals.breakfast ||
     entry.meals.lunch ||
     entry.meals.dinner;
 
+  // 紀錄所屬日期：用本地時間解析
+  const recordDate = new Date(`${entry.recordDate}T00:00:00`);
+
+  const isToday =
+    recordDate.toDateString() === new Date().toDateString();
+
+  const formattedRecordDate = recordDate.toLocaleDateString(
+    "zh-TW",
+    {
+      month: "long",
+      day: "numeric",
+      weekday: "long",
+    },
+  );
+
+  const title = isToday
+    ? "今日紀錄"
+    : `${formattedRecordDate}的紀錄`;
+
+  // 更新
+  const updatedAt = new Date(entry.updatedAt);
+
+  const formattedUpdatedAt = updatedAt.toLocaleString("zh-TW", {
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  });
+
   return (
     <section className="flex flex-col w-full gap-8">
       <div className="flex items-start justify-between text-dark dark:text-cream">
         <div>
-          <h2 className="text-lg font-bold">今日紀錄</h2>
-          <span className="text-xs">
-            最後更新 {formatTime(entry.updatedAt)}
-          </span>
+          <h2 className="mb-2 text-lg font-bold">{title}</h2>
+          <p className="text-sm">
+            最後更新
+            <time className="ml-2" dateTime={entry.updatedAt}>
+              {formattedUpdatedAt}
+            </time>
+          </p>
         </div>
 
         <button
@@ -135,7 +160,7 @@ export function RecordCard({ entry, onEdit }) {
         </div>
 
         <RecordItem
-          label="今天在意的事"
+          label={`${dayLabel}在意的事`}
           value={entry.eventNote || "未記錄"}
         />
       </div>
@@ -143,7 +168,7 @@ export function RecordCard({ entry, onEdit }) {
       <div className="flex justify-center gap-4 px-10 py-6 ark:bg-cream/20 rounded-3xl bg-cream/80 dark:bg-cream/10">
         <div className="flex flex-col font-semibold text-center">
           <p className="text-milkTeaBrown dark:text-peach">
-            感謝你紀錄今天的自己
+            感謝你紀錄{dayLabel}的自己
           </p>
           <p className="dark:text-cream100 text-dark">
             你正在一步步照顧自己，好棒！

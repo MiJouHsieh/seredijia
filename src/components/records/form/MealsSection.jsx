@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MealItem } from "src/components/records/form/MealItem";
 
-export function MealsSection({ formData, setFormData }) {
+export function MealsSection({ formData, setFormData, dayLabel }) {
   const [openMealInput, setOpenMealInput] = useState(null);
   const [mealInput, setMealInput] = useState("");
 
@@ -64,7 +64,7 @@ export function MealsSection({ formData, setFormData }) {
   return (
     <section className="section-style">
       <h2 className="text-xl font-semibold text-center">
-        今天有吃飯嗎？
+        {dayLabel}有吃飯嗎？
       </h2>
 
       <div className="grid items-start grid-cols-3 gap-3">

@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-export function TodayStatusCard({ displayName, todayEntry }) {
+export function TodayStatusCard({ displayName, todayEntry, today }) {
   const currentDate = new Date();
 
   function getGreeting(date = new Date()) {
@@ -49,12 +49,10 @@ export function TodayStatusCard({ displayName, todayEntry }) {
                 : "今天想留下些什麼？"}
             </p>
             <Link
-              to="/today-record"
+              to={`/records/${today}`}
               className="font-medium transition-colors duration-200 border-b-4 hover:border-peach dark:border-cream200 border-milkTeaDark hover:text-cream"
             >
-              {todayEntry
-                ? "查看今日紀錄"
-                : "開始今日紀錄"}
+              {todayEntry ? "查看今日紀錄" : "開始今日紀錄"}
             </Link>
           </div>
         </div>
