@@ -1,4 +1,8 @@
-export function SleepMedicationSection({ formData, setFormData }) {
+export function SleepMedicationSection({
+  formData,
+  setFormData,
+  dayLabel,
+}) {
   const options = [
     {
       value: "taken",
@@ -23,12 +27,12 @@ export function SleepMedicationSection({ formData, setFormData }) {
       sleepMedication: value,
     }));
   };
-  
+
   return (
     <section className="section-style">
       <div className="mb-4 text-center">
         <h2 className="text-xl font-semibold">
-          今天有服用助眠藥嗎？
+          {dayLabel}有服用助眠藥嗎？
         </h2>
 
         <p className="mt-1 text-sm text-milkTea">

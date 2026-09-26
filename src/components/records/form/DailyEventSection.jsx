@@ -1,12 +1,9 @@
-export function DailyEventSection({
-  value,
-  onChange,
-}) {
+export function DailyEventSection({ value, onChange, dayLabel }) {
   return (
     <section className="section-style">
       <div className="text-center">
         <h2 className="text-xl font-semibold">
-          今天有什麼讓你在意的事嗎？
+          {dayLabel}有什麼讓你在意的事嗎？
         </h2>
         <p className="mt-1 text-sm text-stone-400">選填</p>
       </div>

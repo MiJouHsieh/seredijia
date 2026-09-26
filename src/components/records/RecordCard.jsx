@@ -32,7 +32,7 @@ const sleepMedicationLabels = {
   notNeeded: "不需要服用",
 };
 
-export function RecordCard({ entry, onEdit }) {
+export function RecordCard({ entry, onEdit, dayLabel }) {
   const hasMealRecord =
     entry.meals.breakfast ||
     entry.meals.lunch ||
@@ -56,7 +56,7 @@ export function RecordCard({ entry, onEdit }) {
   const title = isToday
     ? "今日紀錄"
     : `${formattedRecordDate}的紀錄`;
-  
+
   // 更新
   const updatedAt = new Date(entry.updatedAt);
 
@@ -75,10 +75,7 @@ export function RecordCard({ entry, onEdit }) {
           <h2 className="mb-2 text-lg font-bold">{title}</h2>
           <p className="text-sm">
             最後更新
-            <time
-              className="ml-2"
-              dateTime={entry.updatedAt}
-            >
+            <time className="ml-2" dateTime={entry.updatedAt}>
               {formattedUpdatedAt}
             </time>
           </p>
@@ -163,7 +160,7 @@ export function RecordCard({ entry, onEdit }) {
         </div>
 
         <RecordItem
-          label="今天在意的事"
+          label={`${dayLabel}在意的事`}
           value={entry.eventNote || "未記錄"}
         />
       </div>
@@ -171,7 +168,7 @@ export function RecordCard({ entry, onEdit }) {
       <div className="flex justify-center gap-4 px-10 py-6 ark:bg-cream/20 rounded-3xl bg-cream/80 dark:bg-cream/10">
         <div className="flex flex-col font-semibold text-center">
           <p className="text-milkTeaBrown dark:text-peach">
-            感謝你紀錄今天的自己
+            感謝你紀錄{dayLabel}的自己
           </p>
           <p className="dark:text-cream100 text-dark">
             你正在一步步照顧自己，好棒！

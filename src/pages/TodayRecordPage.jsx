@@ -53,6 +53,8 @@ export function TodayRecordPage() {
   const [selectedDate, setSelectedDate] = useState(() =>
     getDateKey(new Date()),
   );
+  const isToday = selectedDate === today;
+  const dayLabel = isToday ? "今天" : "那天";
 
   const userId = user?.id;
 
@@ -293,6 +295,7 @@ export function TodayRecordPage() {
             hasEntry={Boolean(selectedEntry)}
             isEditing={isEditing}
             displayName={displayName}
+            dayLabel={dayLabel}
           />
         </div>
 
@@ -326,14 +329,15 @@ export function TodayRecordPage() {
             saveError={saveError}
             onSave={handleSaveEntry}
             onCancel={() => setIsEditing(false)}
-            selectedDate={selectedDate}
             onDateChange={setSelectedDate}
             maxDate={today}
+            dayLabel={dayLabel}
           />
         ) : (
           <RecordCard
             entry={selectedEntry}
             onEdit={handleEditEntry}
+            dayLabel={dayLabel}
           />
         )}
       </div>

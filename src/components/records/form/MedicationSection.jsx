@@ -15,7 +15,7 @@ const medicationGroups = [
   },
 ];
 
-export function MedicationSection({ formData, setFormData }) {
+export function MedicationSection({ formData, setFormData, dayLabel }) {
   function getButtonClass(isSelected) {
     return `
       rounded-full px-4 py-3 focus-visible:outline-none
@@ -39,7 +39,7 @@ export function MedicationSection({ formData, setFormData }) {
   return (
     <section className="section-style">
       <h2 className="text-xl font-semibold text-center">
-        今天有按時吃藥嗎？
+        {dayLabel}有吃藥嗎？
       </h2>
 
       {medicationGroups.map((group) => (
