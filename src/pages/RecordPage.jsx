@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router";
 
 import { TodayCheckInHeader } from "src/components/records/TodayCheckInHeader";
 import { RecordForm } from "src/components/records/RecordForm";
@@ -36,7 +37,7 @@ const initialFormData = {
   eventNote: "",
 };
 
-export function TodayRecordPage() {
+export function RecordPage() {
   const { user } = useAuth();
   const displayName = user?.user_metadata?.name;
   const [formData, setFormData] = useState(initialFormData);
@@ -50,9 +51,10 @@ export function TodayRecordPage() {
   const [loadError, setLoadError] = useState("");
 
   const today = getDateKey(new Date());
-  const [selectedDate, setSelectedDate] = useState(() =>
-    getDateKey(new Date()),
-  );
+  const { date } = useParams();
+  const navigate = useNavigate();
+  const selectedDate = date
+  
   const isToday = selectedDate === today;
   const dayLabel = isToday ? "今天" : "那天";
 
@@ -232,7 +234,7 @@ export function TodayRecordPage() {
       setMoodEntries([newEntry]);
 
       // 成功後，才離開編輯畫面
-      setIsEditing(false)
+      setIsEditing(false);
     } catch (error) {
       console.error("儲存紀錄失敗：", error);
       setSaveError("儲存失敗，請稍後再試一次。");
@@ -276,8 +278,7 @@ export function TodayRecordPage() {
     }
 
     // 先切換成讀取畫面，避免短暫顯示上一天的表單
-    setIsLoading(true);
-    setSelectedDate(nextDate);
+    navigate(`/records/${nextDate}`);
   }
 
   //選取日期
@@ -329,8 +330,6 @@ export function TodayRecordPage() {
             saveError={saveError}
             onSave={handleSaveEntry}
             onCancel={() => setIsEditing(false)}
-            onDateChange={setSelectedDate}
-            maxDate={today}
             dayLabel={dayLabel}
           />
         ) : (
