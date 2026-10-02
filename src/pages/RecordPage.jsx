@@ -288,8 +288,8 @@ export function RecordPage() {
   );
 
   return (
-    <main className="relative pt-12 page-style min-h-dvh">
-      <div className="relative z-10 w-full px-4 py-10">
+    <main className="relative flex justify-center pt-12 page-style min-h-dvh">
+      <div className="relative z-10 w-full max-w-[600px] px-4 py-10">
         <div className="mx-auto flex max-w-[500px] flex-col items-center gap-8 rounded-3xl md:max-w-[600px] md:px-6 lg:max-w-[800px]">
           <TodayCheckInHeader
             currentDate={selectedDisplayDate}
@@ -300,7 +300,7 @@ export function RecordPage() {
           />
         </div>
 
-        <div className="flex items-center justify-center gap-3 my-4">
+        <div className="flex items-center justify-center gap-2 my-4 text-clayPeach dark:text-peach">
           <label htmlFor="record-date">紀錄日期</label>
 
           <input
@@ -310,6 +310,7 @@ export function RecordPage() {
             max={today}
             disabled={isSaving}
             onChange={(e) => handleDateChange(e.target.value)}
+            className="px-2 py-1 rounded-lg bg-cream100 dark:bg-purple100 focus:ring-peach focus:outline-none focus:ring-2"
           />
         </div>
 
