@@ -10,9 +10,9 @@ import { NavItem } from "src/components/nav/NavItem";
 
 const ROUTES = [
   { id: "", label: "首頁" },
-  { id: "today-record", label: "今日紀錄" },
-  { id: "history-record", label: "歷史紀錄" },
-  { id: "report-record", label: "分析報告" },
+  { id: "record/", label: "今日紀錄" },
+  { id: "history", label: "歷史紀錄" },
+  { id: "report", label: "分析報告" },
 ];
 
 export function NavAction({ label, onClick }) {
