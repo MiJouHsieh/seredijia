@@ -9,7 +9,7 @@ function HistoryItem({ label, mood, url, isHeader = false }) {
     : "dark:text-cream100 text-dark/60";
 
   return (
-    <div className="grid items-center grid-cols-3 gap-4 p-2 border-b border-softPeach">
+    <div className="grid items-center grid-cols-3 gap-4 p-2 border-b border-softPeach dark:border-softPeach/20">
       <span className={textClass}>{label}</span>
       <span className={`text-center ${textClass}`}>{mood}</span>
       <div className="text-right">
@@ -151,6 +151,16 @@ export function HistoryPage() {
               下個月 →
             </button>
           </div>
+
+          <div className="flex flex-col gap-3">
+            <Link
+              to="/weekly-review"
+              className="flex justify-center font-medium transition-colors duration-200 border-b-4 hover:border-peach dark:border-cream200 border-milkTeaDark text-dark dark:text-cream"
+            >
+              查看一週紀錄 →
+            </Link>
+          </div>
+
           {isLoading ? (
             <p className="text-sm">讀取紀錄中...</p>
           ) : historyEntries.length > 0 ? (

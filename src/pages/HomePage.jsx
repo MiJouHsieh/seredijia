@@ -24,6 +24,8 @@ export function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
 
+  const [weeklyEntries, setWeeklyEntries] = useState([]);
+
   const currentDate = new Date();
   const todayKey = getDateKey(currentDate);
   const userId = user?.id
@@ -124,7 +126,63 @@ export function HomePage() {
     return () => {
       ignore = true;
     };
-   }, [userId, todayKey])
+  }, [userId, todayKey])
+  
+  useEffect(() => {
+      if (!userId) return;
+      async function fetchWeeklyEntries() {
+        try {
+          setIsLoading(true);
+          //清除前一次查詢結果
+          setWeeklyEntries([]);
+  
+          const currentDate = new Date();
+          //先複製一份，再修改複製品
+          const sevenDaysAgoDate = new Date(currentDate);
+          sevenDaysAgoDate.setDate(currentDate.getDate() - 6);
+  
+          const sevenDaysAgo = getDateKey(sevenDaysAgoDate);
+          const today = getDateKey(currentDate);
+  
+          const { data, error } = await supabase
+            .from("daily_checkins")
+            .select(
+              "id, record_date, mood, daytime_medication, nighttime_medication, sleep_medication_status, breakfast, lunch, dinner",
+            )
+            .eq("user_id", userId)
+            .gte("record_date", sevenDaysAgo)
+            .lte("record_date", today)
+            .order("record_date", { ascending: true });
+  
+          if (error) throw error;
+  
+          setWeeklyEntries(data ?? []);
+
+        } catch (error) {
+          console.error("讀取一週紀錄失敗：", error);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+  
+      fetchWeeklyEntries();
+  }, [userId]);
+  
+  const last7Days = Array.from({ length: 7 }, (_, index) => {
+    const date = new Date();
+
+    date.setDate(date.getDate() - (6 - index));
+
+    return getDateKey(date);
+  });
+
+  const moods7Days = last7Days.map((date) => {
+    const entry = weeklyEntries.find((item) => {
+      return item.record_date === date;
+    });
+
+    return entry ? entry.mood : null;
+  });
   
   return (
     <main className="relative pt-12 page-style min-h-dvh">
@@ -148,7 +206,11 @@ export function HomePage() {
           )}
 
           {/*累積紀錄摘要 */}
-          <RecordOverview entries={moodEntries} />
+          <RecordOverview
+            entries={moodEntries}
+            notedDays={weeklyEntries.length}
+            moods7Days={moods7Days}
+          />
         </div>
       </div>
     </main>
