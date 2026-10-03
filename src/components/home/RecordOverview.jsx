@@ -1,6 +1,22 @@
 import { Link } from "react-router";
 
-export function RecordOverview() {
+const moodOptions = [
+  { value: "happy", label: "開心", emoji: "😊" },
+  { value: "calm", label: "平靜", emoji: "😌" },
+  { value: "okay", label: "普通", emoji: "😐" },
+  { value: "sad", label: "難過", emoji: "☹️" },
+  { value: "overwhelmed", label: "不堪負荷", emoji: "😣" },
+];
+
+export function RecordOverview({ notedDays, moods7Days }) {
+  
+  const emoji7Days = moods7Days.map((mood) => {
+    const option = moodOptions.find((item) => {
+      return item.value === mood;
+    });
+    return option ? option.emoji : "-";
+  });
+
   return (
     <section className="flex flex-col w-full gap-8">
       <div>
@@ -19,12 +35,12 @@ export function RecordOverview() {
           <div className="bg-cream100/80 dark:bg-milkTeaDark/30 425:w-[75%] 500:w-[65%] absolute bottom-[0%] right-0 flex h-[40%] w-[85%] items-center justify-end gap-5 rounded-xl px-5 py-3 opacity-90 backdrop-blur-sm">
             <div className="flex flex-col gap-1 text-sm text-dark dark:text-cream">
               <p>過去 7 天</p>
-              <p>😊😊😊😊😊😊😊</p>
-              <p>已留下 23 天紀錄</p>
+              <p>{emoji7Days.join(" ")}</p>
+              <p>已留下 {notedDays} 天紀錄</p>
             </div>
             <div className="flex flex-col gap-3">
               <Link
-                to="/history?range=7d"
+                to="/weekly-review"
                 className="flex justify-center font-medium transition-colors duration-200 border-b-4 hover:border-peach dark:border-cream200 border-milkTeaDark text-dark dark:text-cream"
               >
                 查看一週紀錄
