@@ -8,10 +8,18 @@ function HistoryItem({ label, mood, url, isHeader = false }) {
     ? "font-medium dark:text-cream200 text-dark"
     : "dark:text-cream100 text-dark/60";
 
+  // emoji
+  const optionMood = moodOptions.find((moodOption) => moodOption.value === mood
+  );
+
   return (
     <div className="grid items-center grid-cols-3 gap-4 p-2 border-b border-softPeach dark:border-softPeach/20">
-      <span className={textClass}>{label}</span>
-      <span className={`text-center ${textClass}`}>{mood}</span>
+      <span className={textClass}>
+        {isHeader ? label : formatDateLabel(label)}
+      </span>
+      <span className={`text-center ${textClass}`}>
+        {isHeader ? "心情" : (optionMood?.emoji ?? "—")}
+      </span>
       <div className="text-right">
         {isHeader ? (
           <span className={textClass}>紀錄入口</span>
@@ -53,6 +61,26 @@ function getDateKey(date) {
 
   return `${year}-${month}-${day}`;
 }
+
+function formatDateLabel(dateString) {
+  const date = new Date(`${dateString}T00:00:00`);
+
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  const weekDays = ["日", "一", "二", "三", "四", "五", "六"];
+  const weekDay = weekDays[date.getDay()];
+
+  return `${month}/${day}（${weekDay}）`;
+}
+
+const moodOptions = [
+  { value: "happy", label: "開心", emoji: "😊" },
+  { value: "calm", label: "平靜", emoji: "😌" },
+  { value: "okay", label: "普通", emoji: "😐" },
+  { value: "sad", label: "難過", emoji: "☹️" },
+  { value: "overwhelmed", label: "不堪負荷", emoji: "😣" },
+];
 
 export function HistoryPage() {
   const [historyEntries, setHistoryEntries] = useState([]);
