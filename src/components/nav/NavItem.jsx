@@ -1,12 +1,14 @@
 import { Link } from "react-router"
 
-export function NavItem({ id, label, onClick, pathname, to = `/${id}` }) {
-  const isActive = id === "" ? pathname === "/" : pathname.startsWith(`/${id}`)
+export function NavItem({ to, label, onClick, pathname, matchPath }) {
+  const isActive =
+    matchPath === "/"
+      ? pathname === "/"
+      : pathname.startsWith(matchPath);
 
   return (
     <li className="list-none">
       <Link
-        key={id}
         to={to}
         className="cursor-pointer"
         onClick={onClick}
