@@ -32,11 +32,11 @@ const sleepMedicationLabels = {
   notNeeded: "不需要服用",
 };
 
-export function RecordCard({ entry, onEdit, dayLabel }) {
+export function RecordCard({ entry, onEdit }) {
   const hasMealRecord =
-    entry.meals.breakfast ||
-    entry.meals.lunch ||
-    entry.meals.dinner;
+    entry.meals?.breakfast ||
+    entry.meals?.lunch ||
+    entry.meals?.dinner;
 
   // 紀錄所屬日期：用本地時間解析
   const recordDate = new Date(`${entry.recordDate}T00:00:00`);
@@ -138,19 +138,19 @@ export function RecordCard({ entry, onEdit, dayLabel }) {
               {entry.meals.breakfast && (
                 <RecordItem
                   label="早餐"
-                  value={entry.mealNotes.breakfast || "未填寫"}
+                  value={entry.mealNotes?.breakfast || "未填寫"}
                 />
               )}
               {entry.meals.lunch && (
                 <RecordItem
                   label="午餐"
-                  value={entry.mealNotes.lunch || "未填寫"}
+                  value={entry.mealNotes?.lunch || "未填寫"}
                 />
               )}
               {entry.meals.dinner && (
                 <RecordItem
                   label="晚餐"
-                  value={entry.mealNotes.dinner || "未填寫"}
+                  value={entry.mealNotes?.dinner || "未填寫"}
                 />
               )}
             </div>
@@ -160,15 +160,15 @@ export function RecordCard({ entry, onEdit, dayLabel }) {
         </div>
 
         <RecordItem
-          label={`${dayLabel}在意的事`}
+          label="今天在意的事"
           value={entry.eventNote || "未記錄"}
         />
       </div>
 
-      <div className="flex justify-center gap-4 px-10 py-6 ark:bg-cream/20 rounded-3xl bg-cream/80 dark:bg-cream/10">
+      <div className="flex justify-center gap-4 px-10 py-6 rounded-3xl bg-cream/80 dark:bg-cream/10">
         <div className="flex flex-col font-semibold text-center">
           <p className="text-milkTeaBrown dark:text-peach">
-            感謝你紀錄{dayLabel}的自己
+            感謝你紀錄{formattedRecordDate}的自己
           </p>
           <p className="dark:text-cream100 text-dark">
             你正在一步步照顧自己，好棒！
