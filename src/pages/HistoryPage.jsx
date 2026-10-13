@@ -50,7 +50,7 @@ export function HistoryPage() {
 
         const { data, error } = await supabase
           .from("daily_checkins")
-          .select("id, record_date, mood")
+          .select("id, record_date, mood, mood_note, event_note")
           .eq("user_id", userId)
           .gte("record_date", startDate)
           .lt("record_date", endDate)
