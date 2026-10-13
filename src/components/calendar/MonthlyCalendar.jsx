@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import "./MonthlyCalendar.css";
+import "src/components/calendar/MonthlyCalendar.css";
 import { Link } from "react-router";
 import { SelectedRecordCard } from "src/components/calendar/SelectedRecordCard";
 
