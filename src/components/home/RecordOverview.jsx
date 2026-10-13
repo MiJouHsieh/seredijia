@@ -1,12 +1,6 @@
 import { Link } from "react-router";
-
-const moodOptions = [
-  { value: "happy", label: "開心", emoji: "😊" },
-  { value: "calm", label: "平靜", emoji: "😌" },
-  { value: "okay", label: "普通", emoji: "😐" },
-  { value: "sad", label: "難過", emoji: "☹️" },
-  { value: "overwhelmed", label: "不堪負荷", emoji: "😣" },
-];
+import { getCurrentMonthKey } from "src/utils/date";
+import { moodOptions } from "src/constants/moodOptions";
 
 export function RecordOverview({ notedDays, moods7Days }) {
   
@@ -16,6 +10,8 @@ export function RecordOverview({ notedDays, moods7Days }) {
     });
     return option ? option.emoji : "-";
   });
+
+  const currentMonth = getCurrentMonthKey();
 
   return (
     <section className="flex flex-col w-full gap-8">
@@ -65,12 +61,18 @@ export function RecordOverview({ notedDays, moods7Days }) {
             <div className="flex justify-between gap-5">
               <Link
                 to="/history"
-                aria-label="Seredijia 歷史紀錄頁"
+                aria-label="Seredijia 歷史紀錄"
                 className="flex justify-center font-medium transition-colors duration-200 border-b-4 hover:border-peach dark:border-cream200 border-milkTeaDark text-dark dark:text-cream"
               >
                 歷史紀錄
               </Link>
-
+              <Link
+                to={`/monthly-review/${currentMonth}`}
+                aria-label="Seredijia 月紀錄頁"
+                className="flex justify-center font-medium transition-colors duration-200 border-b-4 hover:border-peach dark:border-cream200 border-milkTeaDark text-dark dark:text-cream"
+              >
+                月紀錄
+              </Link>
               <Link
                 to="/report"
                 aria-label="Seredijia 狀態回顧頁"
