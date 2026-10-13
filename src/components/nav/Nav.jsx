@@ -8,12 +8,7 @@ import { useState, useEffect, useRef } from "react";
 import { useAuth } from "src/context/AuthContext";
 import { NavItem } from "src/components/nav/NavItem";
 
-const ROUTES = [
-  { id: "", label: "首頁" },
-  { id: "record/", label: "今日紀錄" },
-  { id: "history", label: "歷史紀錄" },
-  { id: "report", label: "分析報告" },
-];
+import { getCurrentMonthKey } from "src/utils/date";
 
 export function NavAction({ label, onClick }) {
   return (
@@ -35,7 +30,7 @@ export function Nav() {
   const [showMenu, setShowMenu] = useState(false);
   const location = useLocation();
   const navRef = useRef(null);
-  
+
   const { user, signOut } = useAuth();
   const displayName =
     user?.user_metadata?.name ||
@@ -43,6 +38,20 @@ export function Nav() {
     "你";
 
   const navigate = useNavigate();
+
+  const currentMonth = getCurrentMonthKey();
+  const ROUTES = [
+    { to: "/", matchPath: "/", label: "首頁" },
+    { to: "/record/", matchPath: "/record", label: "今日紀錄" },
+    {
+      to: `/monthly-review/${currentMonth}`,
+      matchPath: "/monthly-review",
+      label: "月紀錄",
+    },
+    { to: "/history", matchPath: "/history", label: "歷史紀錄" },
+    { to: "/report", matchPath: "/report", label: "分析報告" },
+  ];
+
   async function handleSignOut() {
     await signOut();
     setShowMenu(false);
@@ -112,11 +121,12 @@ export function Nav() {
           <div className="items-center justify-end hidden gap-4 md:flex">
             {user ? (
               <ul className="flex items-center justify-end gap-4 pt-1 list-none">
-                {ROUTES.map(({ id, label }) => {
+                {ROUTES.map(({ to, matchPath, label }) => {
                   return (
                     <NavItem
-                      key={id}
-                      id={id}
+                      key={to}
+                      to={to}
+                      matchPath={matchPath}
                       label={label}
                       pathname={location.pathname}
                     />
@@ -166,11 +176,12 @@ export function Nav() {
           )}
           {user ? (
             <ul className="flex flex-col gap-y-9">
-              {ROUTES.map(({ id, label }) => {
+              {ROUTES.map(({ to, matchPath, label }) => {
                 return (
                   <NavItem
-                    key={id}
-                    id={id}
+                    key={to}
+                    to={to}
+                    matchPath={matchPath}
                     label={label}
                     pathname={location.pathname}
                     onClick={() => setShowMenu(false)}
@@ -182,10 +193,10 @@ export function Nav() {
           ) : (
             <ul className="flex flex-col gap-y-9">
               <NavItem
-                id="login"
                 label="登入"
                 pathname={location.pathname}
                 to="/login"
+                matchPath="/login"
                 onClick={() => setShowMenu(false)}
               />
             </ul>

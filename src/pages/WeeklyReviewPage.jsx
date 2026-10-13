@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "src/context/AuthContext";
 import { supabase } from "src/supabaseClient";
 import { Link } from "react-router";
+import { moodOptions } from "src/constants/moodOptions";
 
 //今天日期
 function getDateKey(date) {
@@ -23,14 +24,6 @@ function formatDateLabel(dateString) {
 
   return `${month}/${day}（${weekDay}）`;
 }
-
-const moodOptions = [
-  { value: "happy", label: "開心", emoji: "😊" },
-  { value: "calm", label: "平靜", emoji: "😌" },
-  { value: "okay", label: "普通", emoji: "😐" },
-  { value: "sad", label: "難過", emoji: "☹️" },
-  { value: "overwhelmed", label: "不堪負荷", emoji: "😣" },
-];
 
 export function WeeklyReviewPage() {
   const [weeklyEntries, setWeeklyEntries] = useState([]);
