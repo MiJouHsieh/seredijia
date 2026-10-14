@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "src/context/AuthContext";
 import { supabase } from "src/supabaseClient";
-import { Link, useParams } from "react-router";
+import { Link, useParams, useNavigate } from "react-router";
 
 import { moodOptions } from "src/constants/moodOptions";
-  
-function EmptyHistoryState({ isCurrentMonth, today }) {
+
+function EmptyMonthState({ isCurrentMonth, today }) {
   return (
     <div className="flex flex-col items-center w-full gap-14">
-      {isCurrentMonth && (
+      {isCurrentMonth ? (
         <>
           <p className="text-sm text-center">
-            這個月還沒有留下紀錄
+            這個月沒有留下紀錄
           </p>
           <Link
             to={`/records/${today}`}
@@ -20,6 +20,8 @@ function EmptyHistoryState({ isCurrentMonth, today }) {
             開始今日紀錄
           </Link>
         </>
+      ) : (
+        <p className="text-sm text-center">這個月沒有留下紀錄</p>
       )}
     </div>
   );
@@ -32,6 +34,13 @@ function getDateKey(date) {
   const day = String(date.getDate()).padStart(2, "0");
 
   return `${year}-${month}-${day}`;
+}
+
+function getMonthKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+
+  return `${year}-${month}`;
 }
 
 function MoodStatItem({ emoji, label, count }) {
@@ -56,11 +65,8 @@ export function MonthlyReviewPage() {
   const userId = user?.id;
 
   const { month } = useParams();
+  const navigate = useNavigate();
 
-  const [monthlyEntries, setMonthlyEntries] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  //月份
   const [year, monthNumber] = month.split("-");
 
   const selectedMonth = new Date(
@@ -68,6 +74,35 @@ export function MonthlyReviewPage() {
     Number(monthNumber) - 1,
     1,
   );
+
+  const currentDate = new Date();
+  const today = getDateKey(currentDate);
+
+  const isCurrentMonth =
+    selectedMonth.getFullYear() === currentDate.getFullYear() &&
+    selectedMonth.getMonth() === currentDate.getMonth();
+
+  const [monthlyEntries, setMonthlyEntries] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  function handlePrevMonth() {
+    const prevMonth = new Date(
+      selectedMonth.getFullYear(),
+      selectedMonth.getMonth() - 1,
+      1,
+    );
+    navigate(`/monthly-review/${getMonthKey(prevMonth)}`);
+  }
+  function handleNextMonth() {
+    if (isCurrentMonth) return;
+
+    const nextMonth = new Date(
+      selectedMonth.getFullYear(),
+      selectedMonth.getMonth() + 1,
+      1,
+    );
+    navigate(`/monthly-review/${getMonthKey(nextMonth)}`);
+  }
 
   // 心情統計
   const moodStats = {
@@ -142,13 +177,6 @@ export function MonthlyReviewPage() {
     entry.event_note?.trim(),
   );
 
-  const currentDate = new Date();
-  const today = getDateKey(currentDate);
-
-  const isCurrentMonth =
-    selectedMonth.getFullYear() === currentDate.getFullYear() &&
-    selectedMonth.getMonth() === currentDate.getMonth();
-
   useEffect(() => {
     if (!userId) return;
 
@@ -201,10 +229,25 @@ export function MonthlyReviewPage() {
           >
             ← 返回歷史紀錄
           </Link>
+          <div className="flex items-center justify-between gap-4">
+            <button
+              onClick={handlePrevMonth}
+              className="p-2 text-sm border rounded-md text-milkTeaBrown border-peach hover:bg-peach/20 justify-self-start"
+            >
+              ← 上個月
+            </button>
+            <p>
+              {year} 年 {Number(monthNumber)} 月回顧
+            </p>
 
-          <p>
-            {year} 年 {Number(monthNumber)} 月回顧
-          </p>
+            <button
+              onClick={handleNextMonth}
+              disabled={isCurrentMonth}
+              className="p-2 text-sm border rounded-md border-peach text-milkTeaBrown hover:bg-peach/20 justify-self-end disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              下個月 →
+            </button>
+          </div>
 
           <div
             className={`underline underline-offset-4 ${
@@ -276,7 +319,7 @@ export function MonthlyReviewPage() {
               </div>
             </>
           ) : (
-            <EmptyHistoryState
+            <EmptyMonthState
               isCurrentMonth={isCurrentMonth}
               today={today}
             />
