@@ -4,6 +4,8 @@ import { supabase } from "src/supabaseClient";
 import { Link, useParams, useNavigate } from "react-router";
 
 import { moodOptions } from "src/constants/moodOptions";
+import { ProgressStatItem } from "src/components/monthly/ProgressStatItem";
+import { formatDateLabel } from "src/utils/date";
 
 function EmptyMonthState({ isCurrentMonth, today }) {
   return (
@@ -43,17 +45,27 @@ function getMonthKey(date) {
   return `${year}-${month}`;
 }
 
-function MoodStatItem({ emoji, label, count }) {
+function MoodStatItem({ emoji, label, count, maxCount }) {
+  const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
+
   return (
-    <div className="flex items-center justify-between p-2 border-b border-softPeach dark:border-softPeach/20">
+    <div className="grid w-full grid-cols-[120px_1fr_60px] items-center gap-4 py-3">
       <div className="flex items-center gap-3">
         <span>{emoji}</span>
-        <span className="dark:text-cream100 text-dark/60">
+        <span className="dark:text-cream100 text-dark/80">
           {label}
         </span>
       </div>
+      <div className="h-3 overflow-hidden rounded-full bg-clayPeach/30">
+        <div
+          className="h-full rounded-full bg-milkTeaDark dark:bg-milkTea"
+          style={{
+            width: `${percentage}%`,
+          }}
+        />
+      </div>
 
-      <span className="font-medium dark:text-cream200 text-dark">
+      <span className="font-medium dark:text-cream200 text-dark/80">
         {count} 天
       </span>
     </div>
@@ -117,6 +129,7 @@ export function MonthlyReviewPage() {
       moodStats[entry.mood] += 1;
     }
   });
+  const maxMoodCount = Math.max(...Object.values(moodStats));
 
   // 用藥統計
   const medicationStats = {
@@ -173,8 +186,9 @@ export function MonthlyReviewPage() {
   });
 
   // 事件紀錄的日期
-  const eventEntries = monthlyEntries.filter((entry) =>
-    entry.event_note?.trim(),
+  const eventEntries = monthlyEntries.filter(
+    (entry) =>
+      entry.mood_note?.trim() || entry.event_note?.trim(),
   );
 
   useEffect(() => {
@@ -199,7 +213,7 @@ export function MonthlyReviewPage() {
         const { data, error } = await supabase
           .from("daily_checkins")
           .select(
-            "id, record_date, mood, daytime_medication, nighttime_medication, sleep_medication_status, breakfast, lunch, dinner, event_note",
+            "id, record_date, mood, daytime_medication, nighttime_medication, sleep_medication_status, breakfast, lunch, dinner, event_note, mood_note, user_id",
           )
           .eq("user_id", userId)
           .gte("record_date", startDate)
@@ -222,13 +236,14 @@ export function MonthlyReviewPage() {
   return (
     <main className="relative pt-12 page-style min-h-dvh">
       <div className="relative z-10 w-full px-4 py-10">
-        <div className="mx-auto flex max-w-[500px] flex-col items-center gap-6 rounded-3xl md:max-w-[600px] md:px-6 lg:max-w-[800px]">
+        <div className="dark:text-cream200 mx-auto flex max-w-[500px] flex-col items-center gap-6 rounded-3xl md:max-w-[600px] md:px-6 lg:max-w-[800px]">
           <Link
             to="/history"
             className="self-start font-medium text-center transition-colors duration-200 border-b-4 cursor-pointer hover:text-clayPeach hover:border-peach dark:border-cream200 border-milkTeaDark dark:hover:text-peach dark:hover:border-peach text-dark dark:text-cream"
           >
             ← 返回歷史紀錄
           </Link>
+
           <div className="flex items-center justify-between gap-4">
             <button
               onClick={handlePrevMonth}
@@ -269,11 +284,12 @@ export function MonthlyReviewPage() {
           ) : monthlyEntries.length > 0 ? (
             <>
               <p className="text-sm">
-                {month}月已留下 {monthlyEntries.length} 天紀錄
+                {year} 年 {Number(monthNumber)} 月已留下{" "}
+                {monthlyEntries.length} 天紀錄
               </p>
 
-              <div className="flex flex-col items-start justify-between gap-3 p-2 border-b border-softPeach dark:border-softPeach/20">
-                <h2>01 心情分布</h2>
+              <div className="flex flex-col items-start w-full gap-3 p-4 pl-3 rounded-md bg-clayPeach/5">
+                <h2 className="font-semibold">01 心情分布</h2>
                 <div className="w-full">
                   {moodOptions.map((option) => (
                     <MoodStatItem
@@ -281,38 +297,79 @@ export function MonthlyReviewPage() {
                       emoji={option.emoji}
                       label={option.label}
                       count={moodStats[option.value]}
+                      maxCount={maxMoodCount}
                     />
                   ))}
                 </div>
               </div>
 
-              <div className="flex flex-col items-start justify-between gap-3 p-2 border-b border-softPeach dark:border-softPeach/20">
-                <h2>02 用藥統計</h2>
-                <span>
-                  白天用藥 {medicationStats.daytime.taken} 天
-                </span>
-                <span>
-                  晚上用藥 {medicationStats.nighttime.taken} 天
-                </span>
-                <span>
-                  睡眠用藥 {medicationStats.sleep.taken} 天
-                </span>
+              <div className="flex flex-col items-start w-full gap-3 p-4 pl-3 rounded-md bg-clayPeach/5">
+                <h2 className="font-semibold">02 用藥統計</h2>
+                <ProgressStatItem
+                  label="白天用藥"
+                  count={medicationStats.daytime.taken}
+                  total={monthlyEntries.length}
+                />
+
+                <ProgressStatItem
+                  label="晚上用藥"
+                  count={medicationStats.nighttime.taken}
+                  total={monthlyEntries.length}
+                />
+                <div className="space-y-2">
+                  <p className="dark:text-cream100 text-dark/80">
+                    睡眠藥物
+                  </p>
+                  <p className="text-sm dark:text-cream200 text-dark">
+                    服用 {medicationStats.sleep.taken} 天 · 漏服{" "}
+                    {medicationStats.sleep.missed} 天 · 不需要{" "}
+                    {medicationStats.sleep.notNeeded} 天
+                  </p>
+                </div>
               </div>
 
-              <div className="flex flex-col items-start justify-between gap-3 p-2 border-b border-softPeach dark:border-softPeach/20">
-                <h2>03 飲食統計</h2>
-                有記得吃
-                <span>早餐 {mealStats.breakfast} 天</span>
-                <span>午餐 {mealStats.lunch} 天</span>
-                <span>晚餐 {mealStats.dinner} 天</span>
+              <div className="flex flex-col items-start w-full gap-3 p-4 pl-3 rounded-md bg-clayPeach/5">
+                <h2 className="font-semibold">03 飲食狀況</h2>
+                <ProgressStatItem
+                  label="早餐"
+                  count={mealStats.breakfast}
+                  total={monthlyEntries.length}
+                />
+                <ProgressStatItem
+                  label="午餐"
+                  count={mealStats.lunch}
+                  total={monthlyEntries.length}
+                />
+                <ProgressStatItem
+                  label="晚餐"
+                  count={mealStats.dinner}
+                  total={monthlyEntries.length}
+                />
               </div>
 
-              <div className="flex flex-col items-start justify-between gap-3 p-2 border-b border-softPeach dark:border-softPeach/20">
-                <h2>04 值得回顧的事件</h2>
-                <ul>
+              <div className="flex flex-col items-start w-full gap-3 p-4 pl-3 rounded-md bg-clayPeach/5">
+                <h2 className="font-semibold">
+                  04 值得回顧的紀錄
+                </h2>
+                <ul className="w-full space-y-4 dark:text-cream100/80 text-dark/90">
                   {eventEntries.map((entry) => (
-                    <li className="" key={entry.id}>
-                      {entry.event_note}
+                    <li
+                      className="flex flex-col md:flex-row md:gap-4"
+                      key={entry.id}
+                    >
+                      <span className="font-semibold md:w-24 md:shrink-0">
+                        {formatDateLabel(entry.record_date)}
+                      </span>
+
+                      <div>
+                        {entry.mood_note && (
+                          <p>{entry.mood_note}</p>
+                        )}
+
+                        {entry.event_note && (
+                          <p>{entry.event_note}</p>
+                        )}
+                      </div>
                     </li>
                   ))}
                 </ul>
