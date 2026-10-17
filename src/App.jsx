@@ -3,7 +3,7 @@ import { AuthProvider } from "src/context/AuthContext";
 
 import { HomePage } from "src/pages/HomePage";
 import { RecordPage } from "src/pages/RecordPage";
-import { ReportPage } from "src/pages/ReportPage";
+import { ReviewPage } from "src/pages/ReviewPage";
 import { MonthlyReviewPage } from "src/pages/MonthlyReviewPage";
 import { HistoryPage } from "src/pages/HistoryPage";
 import { WeeklyReviewPage } from "src/pages/WeeklyReviewPage";
@@ -24,14 +24,14 @@ function App() {
           <Route path="/records/:date" element={<RecordPage />} />
           <Route path="/history" element={<HistoryPage />} />
           <Route
-            path="/monthly-review/:month"
-            element={<MonthlyReviewPage />}
-          />
-          <Route
             path="/weekly-review"
             element={<WeeklyReviewPage />}
           />
-          <Route path="/report" element={<ReportPage />} />
+          <Route
+            path="/monthly-review/:month"
+            element={<MonthlyReviewPage />}
+          />
+          <Route path="/reviews" element={<ReviewPage />} />
         </Routes>
       </AuthProvider>
     </section>

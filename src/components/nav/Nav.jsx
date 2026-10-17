@@ -49,7 +49,11 @@ export function Nav() {
       label: "月紀錄",
     },
     { to: "/history", matchPath: "/history", label: "歷史紀錄" },
-    { to: "/report", matchPath: "/report", label: "分析報告" },
+    {
+      to: "/reviews",
+      matchPath: "/reviews",
+      label: "狀態回顧",
+    },
   ];
 
   async function handleSignOut() {
