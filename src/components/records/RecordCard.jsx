@@ -32,7 +32,7 @@ const sleepMedicationLabels = {
   notNeeded: "不需要服用",
 };
 
-export function RecordCard({ entry, onEdit }) {
+export function RecordCard({ entry, onEdit, onDeleteClick }) {
   const hasMealRecord =
     entry.meals?.breakfast ||
     entry.meals?.lunch ||
@@ -69,7 +69,7 @@ export function RecordCard({ entry, onEdit }) {
   });
 
   return (
-    <section className="flex flex-col w-full gap-8">
+    <section className="relative flex flex-col w-full gap-8">
       <div className="flex items-start justify-between text-dark dark:text-cream">
         <div>
           <h2 className="mb-2 text-lg font-bold">{title}</h2>
@@ -178,6 +178,15 @@ export function RecordCard({ entry, onEdit }) {
         <div className="text-4xl text-milkTeaBrown dark:text-peach">
           ♡
         </div>
+      </div>
+      <div className="flex justify-end">
+        <button
+          type="button"
+          onClick={onDeleteClick}
+          className="px-6 py-2 text-red-700 border-2 border-red-700 rounded-md hover:cursor-pointer dark:text-red-400"
+        >
+          刪除這天的紀錄
+        </button>
       </div>
     </section>
   );
