@@ -9,6 +9,7 @@ import { useAuth } from "src/context/AuthContext";
 import { NavItem } from "src/components/nav/NavItem";
 
 import { getCurrentMonthKey } from "src/utils/date";
+import { getDateKey } from "src/utils/date";
 
 export function NavAction({ label, onClick }) {
   return (
@@ -40,9 +41,14 @@ export function Nav() {
   const navigate = useNavigate();
 
   const currentMonth = getCurrentMonthKey();
+  const today = getDateKey(new Date());
   const ROUTES = [
     { to: "/", matchPath: "/", label: "首頁" },
-    { to: "/record/", matchPath: "/record", label: "今日紀錄" },
+    {
+      to: `/records/${today}`,
+      matchPath: "/records",
+      label: "單日紀錄",
+    },
     {
       to: `/monthly-review/${currentMonth}`,
       matchPath: "/monthly-review",
