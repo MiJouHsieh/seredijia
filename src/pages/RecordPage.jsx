@@ -4,6 +4,8 @@ import { useParams, useNavigate } from "react-router";
 import { TodayCheckInHeader } from "src/components/records/TodayCheckInHeader";
 import { RecordForm } from "src/components/records/RecordForm";
 import { RecordCard } from "src/components/records/RecordCard";
+import { DeleteRecordDialog } from "src/components/records/DeleteRecordDialog";
+
 import { useAuth } from "src/context/AuthContext";
 import { supabase } from "src/supabaseClient";
 //今天日期
@@ -41,11 +43,17 @@ export function RecordPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
 
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] =
+    useState(false);
+  //刪除狀態
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+
   const today = getDateKey(new Date());
   const { date } = useParams();
   const navigate = useNavigate();
-  const selectedDate = date
-  
+  const selectedDate = date;
+
   const isToday = selectedDate === today;
   const dayLabel = isToday ? "今天" : "那天";
 
@@ -70,6 +78,9 @@ export function RecordPage() {
       setIsEditing(false);
       setFormData(initialFormData);
       setSaveError("");
+      //切換日期時關閉確認視窗
+      setIsDeleteDialogOpen(false);
+      setDeleteError("");
 
       // 沒有登入，沒有日期或選到未來，不查詢
       if (!userId || !selectedDate || selectedDate > today) {
@@ -235,6 +246,41 @@ export function RecordPage() {
     }
   }
 
+  async function handleDeleteEntry() {
+    if (!userId || !selectedEntry || isDeleting) return;
+
+    setIsDeleting(true);
+    setDeleteError("");
+
+    try {
+      const { data, error } = await supabase
+        .from("daily_checkins")
+        .delete()
+        .eq("id", selectedEntry.id)
+        .eq("user_id", userId)
+        .select("id");
+
+      if (error) throw error;
+
+      if (!data || data.length === 0) {
+        throw new Error("找不到要刪除的紀錄");
+      }
+
+      // 資料庫刪除成功後，更新 React state
+      setMoodEntries([]);
+      setFormData(initialFormData);
+      setIsEditing(false);
+
+      // 關閉確認視窗
+      setIsDeleteDialogOpen(false);
+    } catch (error) {
+      console.error("刪除紀錄失敗：", error);
+      setDeleteError("刪除失敗，請稍後再試一次。");
+    } finally {
+      setIsDeleting(false);
+    }
+  }
+
   function handleEditEntry() {
     if (!selectedEntry) return;
 
@@ -329,6 +375,16 @@ export function RecordPage() {
             entry={selectedEntry}
             onEdit={handleEditEntry}
             dayLabel={dayLabel}
+            onDeleteClick={() => setIsDeleteDialogOpen(true)}
+          />
+        )}
+        {isDeleteDialogOpen && selectedEntry && (
+          <DeleteRecordDialog
+            title={selectedEntry.recordDate}
+            onCancel={() => setIsDeleteDialogOpen(false)}
+            onConfirm={handleDeleteEntry}
+            isDeleting={isDeleting}
+            deleteError={deleteError}
           />
         )}
       </div>
