@@ -74,7 +74,7 @@ export function RecordOverview({ notedDays, moods7Days }) {
                 月紀錄
               </Link>
               <Link
-                to="/report"
+                to="/reviews"
                 aria-label="Seredijia 狀態回顧頁"
                 className="flex justify-center font-medium transition-colors duration-200 border-b-4 hover:border-peach dark:border-cream200 border-milkTeaDark text-dark dark:text-cream"
               >

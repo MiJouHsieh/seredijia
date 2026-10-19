@@ -41,7 +41,7 @@ export function HomePage() {
     let ignore = false
     
     async function fetchTodayEntry() {
-      // 查詢 Supabase 的程式……
+      // 查詢 Supabase 的程式
 
       setMoodEntries([]);
       setLoadError("");

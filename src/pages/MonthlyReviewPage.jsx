@@ -6,6 +6,8 @@ import { Link, useParams, useNavigate } from "react-router";
 import { moodOptions } from "src/constants/moodOptions";
 import { ProgressStatItem } from "src/components/monthly/ProgressStatItem";
 import { formatDateLabel } from "src/utils/date";
+import { getMedicationStats } from "src/utils/getMedicationStats";
+import { getMealStats } from "src/utils/getMealStats";
 
 function EmptyMonthState({ isCurrentMonth, today }) {
   return (
@@ -132,58 +134,10 @@ export function MonthlyReviewPage() {
   const maxMoodCount = Math.max(...Object.values(moodStats));
 
   // 用藥統計
-  const medicationStats = {
-    daytime: {
-      taken: 0,
-      notTaken: 0,
-    },
-    nighttime: {
-      taken: 0,
-      notTaken: 0,
-    },
-    sleep: {
-      taken: 0,
-      missed: 0,
-      notNeeded: 0,
-    },
-  };
-  monthlyEntries.forEach((entry) => {
-    if (entry.daytime_medication === true) {
-      medicationStats.daytime.taken += 1;
-    } else if (entry.daytime_medication === false) {
-      medicationStats.daytime.notTaken += 1;
-    }
-
-    if (entry.nighttime_medication === true) {
-      medicationStats.nighttime.taken += 1;
-    } else if (entry.nighttime_medication === false) {
-      medicationStats.nighttime.notTaken += 1;
-    }
-
-    const sleepStatus = entry.sleep_medication_status;
-    if (Object.hasOwn(medicationStats.sleep, sleepStatus)) {
-      medicationStats.sleep[sleepStatus] += 1;
-    }
-  });
+  const medicationStats = getMedicationStats(monthlyEntries);
 
   // 飲食統計
-  const mealStats = {
-    breakfast: 0,
-    lunch: 0,
-    dinner: 0,
-  };
-
-  monthlyEntries.forEach((entry) => {
-    if (entry.breakfast === true) {
-      mealStats.breakfast += 1;
-    }
-    if (entry.lunch === true) {
-      mealStats.lunch += 1;
-    }
-    if (entry.dinner === true) {
-      mealStats.dinner += 1;
-    }
-  });
+  const mealStats = getMealStats(monthlyEntries);
 
   // 事件紀錄的日期
   const eventEntries = monthlyEntries.filter(
@@ -289,7 +243,7 @@ export function MonthlyReviewPage() {
               </p>
 
               <div className="flex flex-col items-start w-full gap-3 p-4 pl-3 rounded-md bg-clayPeach/5">
-                <h2 className="font-semibold">01 心情分布</h2>
+                <h2 className="font-semibold">01 心情分佈</h2>
                 <div className="w-full">
                   {moodOptions.map((option) => (
                     <MoodStatItem
