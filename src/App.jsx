@@ -1,3 +1,5 @@
+import { ProtectedRoute } from "src/components/auth/ProtectedRoute";
+
 import { Routes, Route } from "react-router";
 import { AuthProvider } from "src/context/AuthContext";
 
@@ -18,20 +20,25 @@ function App() {
       <AuthProvider>
         <Nav />
         <Routes>
+          {/* 公開路由 */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/records/:date" element={<RecordPage />} />
-          <Route path="/history" element={<HistoryPage />} />
-          <Route
-            path="/weekly-review"
-            element={<WeeklyReviewPage />}
-          />
-          <Route
-            path="/monthly-review/:month"
-            element={<MonthlyReviewPage />}
-          />
-          <Route path="/reviews" element={<ReviewPage />} />
+
+          {/* 需要登入的路由 */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/history" element={<HistoryPage />} />
+            <Route
+              path="/weekly-review"
+              element={<WeeklyReviewPage />}
+            />
+            <Route
+              path="/monthly-review/:month"
+              element={<MonthlyReviewPage />}
+            />
+            <Route path="/reviews" element={<ReviewPage />} />
+          </Route>
         </Routes>
       </AuthProvider>
     </section>
