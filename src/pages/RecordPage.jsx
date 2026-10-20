@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router";
+import {
+  useParams,
+  useNavigate,
+  Link,
+  Navigate,
+} from "react-router";
 
 import { TodayCheckInHeader } from "src/components/records/TodayCheckInHeader";
 import { RecordForm } from "src/components/records/RecordForm";
@@ -9,7 +14,7 @@ import { DeleteRecordDialog } from "src/components/records/DeleteRecordDialog";
 import { useAuth } from "src/context/AuthContext";
 import { supabase } from "src/supabaseClient";
 //今天日期
-import { getDateKey } from "src/utils/date";
+import { getDateKey, isValidDateKey } from "src/utils/date";
 
 const initialFormData = {
   mood: null,
@@ -31,6 +36,18 @@ const initialFormData = {
 };
 
 export function RecordPage() {
+  const { date } = useParams();
+  const today = getDateKey(new Date());
+
+  // 無效日期或未來日期，導向今天
+  if (!isValidDateKey(date) || date > today) {
+    return <Navigate to={`/records/${today}`} replace />;
+  }
+
+  return <RecordPageContent />;
+}
+
+ function RecordPageContent() {
   const { user } = useAuth();
   const displayName = user?.user_metadata?.name;
   const [formData, setFormData] = useState(initialFormData);
@@ -51,6 +68,7 @@ export function RecordPage() {
 
   const today = getDateKey(new Date());
   const { date } = useParams();
+
   const navigate = useNavigate();
   const selectedDate = date;
 
