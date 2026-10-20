@@ -274,7 +274,7 @@ export function ReviewPage() {
               )}
             </div>
             <div className="flex items-end w-full gap-3">
-              <span className="flex flex-col items-start gap-1 text-milkTeaDark">
+              <span className="flex flex-col items-start gap-1 text-milkTeaDark dark:text-cream">
                 <label htmlFor="last-clinic-date">
                   回顧起始日期
                 </label>
@@ -286,7 +286,7 @@ export function ReviewPage() {
                   onChange={(e) =>
                     handleDateChange(e.target.value)
                   }
-                  className="h-10 px-3 py-1 border-2 rounded-lg cursor-pointer bg-milkTea dark:bg-purple100 focus:ring-peach border-dark text-cream focus:outline-none focus:ring-2"
+                  className="h-10 px-3 py-1 border-2 rounded-lg cursor-pointer bg-milkTea dark:bg-purple100 focus:ring-peach dark:border-cream200 border-dark text-cream focus:outline-none focus:ring-2 dark:bg-cream/20"
                   disabled={isSaving || isVisitLoading}
                 />
               </span>
@@ -298,14 +298,14 @@ export function ReviewPage() {
             </div>
             <button
               type="button"
-              className="w-full px-3 py-1 border-2 rounded-full cursor-pointer bg-milkTeaBrown border-milkTeaDark enabled:hover:bg-milkTeaBrown/50 text-cream enabled:hover:text-dark disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full px-3 py-1 border-2 rounded-full cursor-pointer bg-milkTeaBrown border-milkTeaDark enabled:hover:bg-milkTeaBrown/50 dark:border-cream200 dark:enabled:hover:bg-cream200 text-cream enabled:hover:text-dark disabled:cursor-not-allowed disabled:opacity-50"
               onClick={handlePreviewReview}
               disabled={selectedVisitDate === ""}
             >
               查看這段期間
             </button>
 
-            <div className="flex flex-col items-center w-full gap-1 p-3 bg-dark/5">
+            <div className="flex flex-col items-center w-full gap-1 p-3 bg-dark/5 dark:bg-cream/5 dark:text-cream">
               {isVisitLoading ? (
                 <p className="text-sm">讀取回診日期中...</p>
               ) : visitLoadError ? (
@@ -313,12 +313,12 @@ export function ReviewPage() {
                   {visitLoadError}
                 </p>
               ) : lastVisitDate ? (
-                <p className="text-sm text-dark">
+                <p className="text-sm dark:text-cream200 text-dark">
                   最近一次已儲存回診：
                   {lastVisitDate}
                 </p>
               ) : (
-                <p className="text-sm text-dark">
+                <p className="text-sm dark:text-cream100 text-dark">
                   尚未設定上次回診日，可先選擇回顧起始日期。
                 </p>
               )}
@@ -327,7 +327,7 @@ export function ReviewPage() {
                 selectedVisitDate !== lastVisitDate &&
                 !savedVisitDates.includes(selectedVisitDate) && (
                   <button
-                    className="px-3 py-1 text-xs border-2 rounded-full cursor-pointer bg-milkTea hover:bg-cream200 border-dark text-cream hover:text-dark disabled:cursor-not-allowed disabled:opacity-50"
+                    className="px-3 py-1 text-xs border-2 rounded-full cursor-pointer bg-milkTea hover:bg-cream200 border-dark text-cream hover:text-dark disabled:cursor-not-allowed disabled:opacity-50 dark:border-cream"
                     type="button"
                     onClick={handleSaveVisitDate}
                     disabled={isSaving}
@@ -350,7 +350,7 @@ export function ReviewPage() {
               )}
             </div>
           </div>
-          <div className="flex flex-col items-center border-t-2 border-milkTeaBrown text-milkTeaDark">
+          <div className="flex flex-col items-center border-t-2 border-milkTeaBrown text-milkTeaDark dark:text-cream200">
             <p className="p-3 text-sm">
               整理這段期間的情緒、用藥、飲食與重要事件，
               方便回診時查看。
@@ -370,7 +370,7 @@ export function ReviewPage() {
               !isLoading &&
               !loadError &&
               selectedEntries.length !== 0 && (
-                <div className="flex flex-col items-center text-sm">
+                <div className="flex flex-col items-center text-sm font-medium">
                   <p>這段回顧期間</p>
                   <p>
                     {reviewStartDate} ~ {today}
@@ -447,13 +447,13 @@ export function ReviewPage() {
                   <h2 className="pb-3 font-semibold">
                     04 值得回顧的紀錄
                   </h2>
-                  <ul className="w-full space-y-4 dark:text-cream100/80">
+                  <ul className="w-full space-y-6 dark:text-cream100/90">
                     {eventEntries.map((entry) => (
                       <li
                         className="flex flex-col md:flex-row md:gap-4"
                         key={entry.id}
                       >
-                        <span className="font-semibold md:w-24 md:shrink-0">
+                        <span className="font-semibold dark:text-cream200 md:w-24 md:shrink-0">
                           {formatDateLabel(entry.record_date)}
                         </span>
 
