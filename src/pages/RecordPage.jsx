@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate, Link } from "react-router";
 
 import { TodayCheckInHeader } from "src/components/records/TodayCheckInHeader";
 import { RecordForm } from "src/components/records/RecordForm";
@@ -163,7 +163,7 @@ export function RecordPage() {
 
     // 確認登入後，才能使用 user.id
     if (!user) {
-      setSaveError("請先登入，再儲存紀錄。");
+      setSaveError("guest-login-required");
       return;
     }
 
@@ -351,6 +351,21 @@ export function RecordPage() {
           />
         </div>
 
+        {/* 提前顯示訪客提示 */}
+        {!user && (
+          <div
+            role="status"
+            className="max-w-xl px-5 py-4 mx-auto mb-6 text-sm text-center rounded-2xl bg-cream/80 text-dark dark:bg-cream/10 dark:text-cream"
+          >
+            <p className="font-semibold">歡迎體驗 SereDijia ♡</p>
+
+            <p className="mt-2">
+              你可以先試著填寫每日紀錄，
+              登入後才能將紀錄儲存到帳號中。
+            </p>
+          </div>
+        )}
+
         {isLoading ? (
           <p role="status" className="text-center">
             正在讀取紀錄…
@@ -360,16 +375,53 @@ export function RecordPage() {
             {loadError}
           </p>
         ) : shouldShowForm ? (
-          <RecordForm
-            formData={formData}
-            setFormData={setFormData}
-            isEditing={isEditing}
-            isSaving={isSaving}
-            saveError={saveError}
-            onSave={handleSaveEntry}
-            onCancel={() => setIsEditing(false)}
-            dayLabel={dayLabel}
-          />
+          <>
+            <RecordForm
+              formData={formData}
+              setFormData={setFormData}
+              isEditing={isEditing}
+              isSaving={isSaving}
+              saveError={
+                saveError === "guest-login-required"
+                  ? ""
+                  : saveError
+              }
+              onSave={handleSaveEntry}
+              onCancel={() => setIsEditing(false)}
+              dayLabel={dayLabel}
+              isGuest={!user}
+            />
+
+            {!user && saveError === "guest-login-required" && (
+              <div
+                role="status"
+                className="max-w-xl px-5 py-5 mx-auto mt-5 text-center rounded-2xl bg-cream/80 text-dark dark:bg-cream/10 dark:text-cream"
+              >
+                <p className="font-semibold">
+                  登入後才能儲存紀錄
+                </p>
+
+                <p className="mt-2 text-sm text-dark/70 dark:text-cream/80">
+                  目前填寫的內容尚未儲存，
+                  離開此頁面後將不會保留。
+                </p>
+
+                <Link
+                  to="/login"
+                  state={{
+                    from: {
+                      pathname: `/records/${selectedDate}`,
+                      search: "",
+                      hash: "",
+                    },
+                  }}
+                  className="inline-block px-6 py-3 mt-4 font-medium rounded-full bg-clayPeach text-cream"
+                >
+                  前往登入
+                </Link>
+              </div>
+            )}
+          </>
         ) : (
           <RecordCard
             entry={selectedEntry}
