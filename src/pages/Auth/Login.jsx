@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useLocation } from "react-router";
 import { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -11,15 +11,23 @@ export function Login() {
   const navigate = useNavigate();
   const { signIn } = useAuth();
 
+  const location = useLocation();
+
+  const from = location.state?.from;
+
+  const redirectTo = from
+    ? `${from.pathname}${from.search}${from.hash}`
+    : "/";
+
   useEffect(() => {
     if (isSubmittingDone) {
       const timer = setTimeout(() => {
-        navigate("/");
+        navigate(redirectTo, { replace: true });
       }, 800);
 
       return () => clearTimeout(timer);
     }
-  }, [isSubmittingDone, navigate]);
+  }, [isSubmittingDone, navigate, redirectTo]);
 
   return (
     <Formik
