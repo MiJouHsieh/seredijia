@@ -14,8 +14,8 @@ export function RecordForm({
   isSaving,
   saveError,
   dayLabel,
+  isGuest,
 }) {
-
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -113,7 +113,11 @@ export function RecordForm({
         >
           {isSaving
             ? "儲存中…"
-            : `♡ ${isEditing ? "儲存修改" : `儲存${dayLabel}的紀錄 ♡`}`}
+            : isGuest
+              ? "登入後儲存紀錄 ♡"
+              : isEditing
+                ? "儲存修改"
+                : `♡ 儲存${dayLabel}的紀錄 ♡`}
         </button>
 
         {isEditing && (
