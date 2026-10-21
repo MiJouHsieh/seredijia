@@ -1,7 +1,11 @@
 import { Link } from "react-router";
 import waveImg from "src/assets/wave.jpg";
 
-export function TodayStatusCard({ displayName, todayEntry, today }) {
+export function TodayStatusCard({
+  displayName,
+  todayEntry,
+  today,
+}) {
   const currentDate = new Date();
 
   function getGreeting(date = new Date()) {
@@ -35,12 +39,11 @@ export function TodayStatusCard({ displayName, todayEntry, today }) {
       </p>
       <div className="relative overflow-hidden rounded-2xl">
         <div className="aspect-[6/3] w-full">
-          {/* <img
-            src="/src/assets/wave.jpg"
+          <img
+            src={waveImg}
             alt=""
             className="object-cover w-full h-full"
-          /> */}
-          <img src={waveImg} alt="" />
+          />
         </div>
 
         <div className="bg-cream100/50 dark:bg-milkTeaDark/30 absolute bottom-0 right-0 flex h-[35%] w-[65%] items-center justify-end rounded-xl py-3 pr-5 opacity-90 backdrop-blur-sm">

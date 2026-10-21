@@ -24,13 +24,11 @@ export function RecordOverview({ notedDays, moods7Days }) {
 
         <div className="relative overflow-hidden bg-center bg-cover rounded-2xl">
           <div className="aspect-[6/3] w-full">
-            {/* <img
-              src="/src/assets/cosmos.jpg"
+            <img
+              src={cosmosImg}
               alt=""
               className="object-cover w-full h-full"
-            /> */}
-            className="object-cover w-full h-full"
-            <img src={cosmosImg} alt="" />
+            />
           </div>
           <div className="bg-cream100/80 dark:bg-milkTeaDark/30 425:w-[75%] 500:w-[65%] absolute bottom-[0%] right-0 flex h-[40%] w-[85%] items-center justify-end gap-5 rounded-xl px-5 py-3 opacity-90 backdrop-blur-sm">
             <div className="flex flex-col gap-1 text-sm text-dark dark:text-cream">
@@ -55,11 +53,6 @@ export function RecordOverview({ notedDays, moods7Days }) {
         </h4>
         <div className="relative overflow-hidden rounded-2xl">
           <div className="aspect-[6/3] w-full">
-            {/* <img
-              src="/src/assets/farm.jpg"
-              alt=""
-              className="object-cover w-full h-full"
-            /> */}
             <img
               src={farmImg}
               alt=""
