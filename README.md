@@ -17,12 +17,13 @@ App 會將每日紀錄整理成近一週、每月及指定期間的統計回顧�
 
 ![功能總覽](./docs/screenshots/features-overview.png)
 
-- [SereDijia Live Website](https://seredijia.vercel.app/)
+- [SereDijia Live Website](https://seredijia-mjh.vercel.app/)
 
 
-- 影片：完整操作流程
+- [影片：第一支：主要操作流程](https://www.youtube.com/watch?v=ayjDwfOoeVk)
   - 註冊登入、建立紀錄、切換日期、查看統計，及儲存回診日期的過程。
-  - 「未登入時會導向登入頁」、「取消編輯不儲存變更」等細節，可以留到 Demo 影片或面試時介紹。
+- 影片：第二支：操作細節與使用體驗
+  - 「未登入時會導向登入頁」、「取消編輯不儲存變更」等細節。
 - 試用帳號： 信箱：seredijiauser@gmail.com 密碼：qwert678
 
 ---
